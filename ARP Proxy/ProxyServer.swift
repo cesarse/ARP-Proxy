@@ -36,7 +36,11 @@ final class ProxyServer {
             return
         }
         do {
-            let listener = try NWListener(using: .tcp, on: port)
+            // Allow rebinding a socket still lingering in TIME_WAIT so a quick
+            // stop/start (or a crash) doesn't fail with "Address already in use".
+            let parameters = NWParameters.tcp
+            parameters.allowLocalEndpointReuse = true
+            let listener = try NWListener(using: parameters, on: port)
             listener.stateUpdateHandler = { [weak self] newState in
                 Task { @MainActor in self?.listenerChanged(to: newState) }
             }

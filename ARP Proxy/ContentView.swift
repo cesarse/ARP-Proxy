@@ -41,7 +41,12 @@ struct ContentView: View {
         .frame(minWidth: 660, minHeight: 460)
         .task {
             interfaces = NetworkInfo.ipv4Interfaces()
-            server.start()
+            // Xcode's Canvas renders the view in a separate, long-lived process.
+            // If it bound the port, it would hold it and the real app run would
+            // fail with "port already in use", so skip the listener in previews.
+            if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] != "1" {
+                server.start()
+            }
         }
     }
 
