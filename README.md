@@ -1,4 +1,4 @@
-# ARP Proxy
+# Another Retro Proxy
 
 A macOS app (Swift 6 / SwiftUI, Xcode 26) that lets vintage operating systems
 running in UTM — Mac OS 9, Windows 95, Windows 3.11, … — browse the modern web.
