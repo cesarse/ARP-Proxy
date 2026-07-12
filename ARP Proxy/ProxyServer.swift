@@ -22,7 +22,22 @@ final class ProxyServer {
 
     private(set) var state: State = .stopped
     private(set) var entries: [LogEntry] = []
-    var port: Int = 8080
+
+    var settings: ProxySettings = ProxySettings.load() {
+        didSet {
+            let clamped = settings.clamped()
+            if clamped != settings {
+                settings = clamped  // re-enters didSet once, with a stable value
+                return
+            }
+            guard settings != oldValue else { return }
+            settings.save()
+            if settings.port != oldValue.port, listener != nil {
+                stop()
+                start()
+            }
+        }
+    }
 
     var isRunning: Bool { state == .running }
 
@@ -31,7 +46,8 @@ final class ProxyServer {
 
     func start() {
         guard listener == nil else { return }
-        guard let port = NWEndpoint.Port(rawValue: UInt16(clamping: port)), port.rawValue > 0 else {
+        guard let port = NWEndpoint.Port(rawValue: UInt16(clamping: settings.port)),
+              port.rawValue > 0 else {
             state = .failed("Invalid port")
             return
         }

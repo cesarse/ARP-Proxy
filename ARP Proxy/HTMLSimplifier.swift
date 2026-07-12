@@ -57,7 +57,8 @@ nonisolated enum HTMLSimplifier {
     /// Returns a simplified ASCII rendition of the page, or nil when the
     /// body should be passed through untouched (too big, undecodable, or
     /// SwiftSoup failed).
-    static func simplify(_ data: Data, contentType: String) -> Data? {
+    static func simplify(_ data: Data, contentType: String,
+                         settings: ProxySettings) -> Data? {
         guard !data.isEmpty, data.count <= maxInputBytes,
               let html = decode(data, contentType: contentType)
         else { return nil }
@@ -68,7 +69,7 @@ nonisolated enum HTMLSimplifier {
             // lazy-image resolution reads data-* — both must run before the
             // attribute pruning pass wipes those attributes out.
             try removeInvisibleElements(doc)
-            try resolveLazyImages(doc)
+            try resolveLazyImages(doc, stripDimensions: settings.stripImageDimensions)
             try replaceIframes(doc)
             try convertButtons(doc)
             try normalizeInputs(doc)
@@ -85,8 +86,12 @@ nonisolated enum HTMLSimplifier {
             for element in try doc.select(renamedToDiv).array() {
                 _ = try element.tagName("div")
             }
+            if settings.htmlVersion == .html32 {
+                try downgradeToHTML32(doc)
+            }
             try pruneAttributes(doc)
             try removeComments(doc)
+            try setDoctype(doc, settings.htmlVersion)
 
             let settings = OutputSettings()
             _ = settings.charset(String.Encoding.ascii)
@@ -122,8 +127,18 @@ nonisolated enum HTMLSimplifier {
 
     /// Promotes lazy-loading attributes into a real src, since no vintage
     /// browser will ever run the JavaScript that was meant to do it.
-    private static func resolveLazyImages(_ doc: Document) throws {
+    private static func resolveLazyImages(_ doc: Document, stripDimensions: Bool) throws {
         for img in try doc.select("img").array() {
+            // Modern sites size images with CSS, so width/height attributes
+            // often describe a different crop than the served file (and the
+            // proxy may downscale it besides). A vintage browser obeys them
+            // literally, stretching the image — drop them and let it use the
+            // delivered file's intrinsic size.
+            if stripDimensions {
+                try img.removeAttr("width")
+                try img.removeAttr("height")
+            }
+
             let src = try img.attr("src")
             guard src.isEmpty || src.hasPrefix("data:") else { continue }
             var replacement = ""
@@ -218,6 +233,36 @@ nonisolated enum HTMLSimplifier {
                 try element.removeAttr(key)
             }
         }
+    }
+
+    /// HTML 3.2 predates a handful of inline tags from HTML 4; unwrap them
+    /// (their content flows on) and turn <q> into literal quotation marks.
+    private static func downgradeToHTML32(_ doc: Document) throws {
+        for quote in try doc.select("q").array() {
+            try quote.prependText("\"")
+            try quote.appendText("\"")
+        }
+        try doc.select("q, abbr, acronym, ins, del, bdo, span").unwrap()
+    }
+
+    /// Declares the vintage dialect we now (approximately) speak, so old
+    /// validators and browsers know what to expect.
+    private static func setDoctype(_ doc: Document, _ version: ProxySettings.HTMLVersion) throws {
+        var doctypes: [DocumentType] = []
+        collect(doc) { node in
+            if let doctype = node as? DocumentType { doctypes.append(doctype) }
+        }
+        for doctype in doctypes {
+            try doctype.remove()
+        }
+        let doctype = switch version {
+        case .html32:
+            DocumentType("html", "-//W3C//DTD HTML 3.2 Final//EN", "", "")
+        case .html401:
+            DocumentType("html", "-//W3C//DTD HTML 4.01 Transitional//EN",
+                         "http://www.w3.org/TR/html4/loose.dtd", "")
+        }
+        try doc.prependChild(doctype)
     }
 
     private static func removeComments(_ doc: Document) throws {

@@ -5,7 +5,9 @@ import UniformTypeIdentifiers
 
 /// Converts image formats vintage browsers don't understand — WebP, AVIF,
 /// HEIC — into ones they do: JPEG for opaque still images, GIF for images
-/// with transparency and for animations.
+/// with transparency and for animations. Formats old browsers already know
+/// (JPEG, PNG, GIF) are only touched when they exceed the configured
+/// maximum dimension, in which case they are downscaled too.
 nonisolated enum ImageTranscoder {
 
     nonisolated struct TranscodedImage: Sendable {
@@ -17,19 +19,18 @@ nonisolated enum ImageTranscoder {
 
     /// Bodies larger than this are passed through untouched.
     private static let maxInputBytes = 24 * 1024 * 1024
-    /// Still images are downscaled to fit vintage-era screens (and RAM).
-    private static let maxStillPixelSize = 2048
     /// Animations with more frames than this are reduced to their first frame.
     private static let maxAnimationFrames = 200
 
-    private static let transcodableTypes: Set<String> = [
-        "image/webp", "image/avif", "image/heic", "image/heif",
-    ]
+    /// Formats vintage browsers can display natively; these only need help
+    /// when they are too big.
+    private static let legacyFormats: Set<String> = ["jpeg", "png", "gif"]
 
     /// Returns a JPEG or GIF replacement for the body, or nil when the body
-    /// is not a transcodable image (or decoding fails and it should be
-    /// passed through unchanged).
-    static func transcodeIfNeeded(_ data: Data, contentType: String) -> TranscodedImage? {
+    /// should be passed through unchanged (not an image, small enough
+    /// already, or decoding failed).
+    static func transcodeIfNeeded(_ data: Data, contentType: String,
+                                  jpegQuality: Double, maxPixelSize: Int) -> TranscodedImage? {
         guard let sourceFormat = detectFormat(data: data, contentType: contentType),
               data.count <= maxInputBytes,
               let source = CGImageSourceCreateWithData(data as CFData, nil)
@@ -37,14 +38,52 @@ nonisolated enum ImageTranscoder {
 
         let frameCount = CGImageSourceGetCount(source)
         guard frameCount > 0 else { return nil }
+
+        if legacyFormats.contains(sourceFormat) {
+            return downscaleLegacy(source, format: sourceFormat, frameCount: frameCount,
+                                   jpegQuality: jpegQuality, maxPixelSize: maxPixelSize)
+        }
+
         if frameCount > 1, frameCount <= maxAnimationFrames {
-            return encodeAnimatedGIF(source, frameCount: frameCount, from: sourceFormat)
+            return encodeAnimatedGIF(source, frameCount: frameCount,
+                                     note: "\(sourceFormat) → gif")
         }
-        guard let image = decodeStill(source) else { return nil }
+        guard let image = decodeStill(source, maxPixelSize: maxPixelSize) else { return nil }
         if hasTransparentPixels(image) {
-            return encodeGIF([image], delays: nil, from: sourceFormat)
+            return encodeGIF([image], delays: nil, note: "\(sourceFormat) → gif")
         }
-        return encodeJPEG(image, from: sourceFormat)
+        return encodeJPEG(image, quality: jpegQuality, note: "\(sourceFormat) → jpeg")
+    }
+
+    /// JPEG/PNG/GIF render fine on vintage browsers, but a 2800 px retina
+    /// hero image will bring a 90s machine to its knees — shrink anything
+    /// over the limit. Small images pass through byte-identical, and
+    /// animated GIFs are never touched.
+    private static func downscaleLegacy(_ source: CGImageSource, format: String,
+                                        frameCount: Int, jpegQuality: Double,
+                                        maxPixelSize: Int) -> TranscodedImage? {
+        guard frameCount == 1,
+              let size = pixelSize(source),
+              max(size.width, size.height) > maxPixelSize,
+              let image = decodeStill(source, maxPixelSize: maxPixelSize)
+        else { return nil }
+        if hasTransparentPixels(image) {
+            let note = format == "gif" ? "gif downscaled" : "\(format) → gif, downscaled"
+            return encodeGIF([image], delays: nil, note: note)
+        }
+        let note = format == "jpeg" ? "jpeg downscaled" : "\(format) → jpeg, downscaled"
+        return encodeJPEG(image, quality: jpegQuality, note: note)
+    }
+
+    /// Reads the pixel dimensions from the image header without decoding.
+    private static func pixelSize(_ source: CGImageSource) -> (width: Int, height: Int)? {
+        let options = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, options)
+                as? [CFString: Any],
+              let width = properties[kCGImagePropertyPixelWidth] as? Int,
+              let height = properties[kCGImagePropertyPixelHeight] as? Int
+        else { return nil }
+        return (width, height)
     }
 
     // MARK: - Format detection
@@ -66,23 +105,37 @@ nonisolated enum ImageTranscoder {
                 }
             }
         }
+        if header.count >= 8, header[0..<8].elementsEqual([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
+            return "png"
+        }
+        if header.count >= 4, header[0..<4].elementsEqual("GIF8".utf8) {
+            return "gif"
+        }
+        if header.count >= 3, header[0] == 0xFF, header[1] == 0xD8, header[2] == 0xFF {
+            return "jpeg"
+        }
         let base = contentType.split(separator: ";").first
             .map { $0.trimmingCharacters(in: .whitespaces) } ?? ""
-        if transcodableTypes.contains(base) {
-            return String(base.dropFirst("image/".count))
+        switch base {
+        case "image/webp": return "webp"
+        case "image/avif": return "avif"
+        case "image/heic", "image/heif": return "heic"
+        case "image/jpeg", "image/jpg", "image/pjpeg": return "jpeg"
+        case "image/png", "image/x-png": return "png"
+        case "image/gif": return "gif"
+        default: return nil
         }
-        return nil
     }
 
     // MARK: - Decoding
 
-    /// Decodes the first frame, downscaled to `maxStillPixelSize` and with
-    /// EXIF orientation baked in.
-    private static func decodeStill(_ source: CGImageSource) -> CGImage? {
+    /// Decodes the first frame, downscaled to `maxPixelSize` and with EXIF
+    /// orientation baked in.
+    private static func decodeStill(_ source: CGImageSource, maxPixelSize: Int) -> CGImage? {
         let options: [CFString: Any] = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: maxStillPixelSize,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize,
             kCGImageSourceShouldCacheImmediately: true,
         ]
         return CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary)
@@ -137,20 +190,20 @@ nonisolated enum ImageTranscoder {
 
     // MARK: - Encoding
 
-    private static func encodeJPEG(_ image: CGImage, from sourceFormat: String) -> TranscodedImage? {
+    private static func encodeJPEG(_ image: CGImage, quality: Double,
+                                   note: String) -> TranscodedImage? {
         let output = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(
             output, UTType.jpeg.identifier as CFString, 1, nil)
         else { return nil }
-        let properties: [CFString: Any] = [kCGImageDestinationLossyCompressionQuality: 0.8]
+        let properties: [CFString: Any] = [kCGImageDestinationLossyCompressionQuality: quality]
         CGImageDestinationAddImage(destination, image, properties as CFDictionary)
         guard CGImageDestinationFinalize(destination) else { return nil }
-        return TranscodedImage(data: output as Data, contentType: "image/jpeg",
-                               note: "\(sourceFormat) → jpeg")
+        return TranscodedImage(data: output as Data, contentType: "image/jpeg", note: note)
     }
 
     private static func encodeAnimatedGIF(_ source: CGImageSource, frameCount: Int,
-                                          from sourceFormat: String) -> TranscodedImage? {
+                                          note: String) -> TranscodedImage? {
         var frames: [CGImage] = []
         var delays: [Double] = []
         for index in 0..<frameCount {
@@ -158,12 +211,12 @@ nonisolated enum ImageTranscoder {
             frames.append(frame)
             delays.append(frameDelay(source, at: index))
         }
-        return encodeGIF(frames, delays: delays, from: sourceFormat)
+        return encodeGIF(frames, delays: delays, note: note)
     }
 
     /// Single- or multi-frame GIF; `delays` non-nil makes it a looping animation.
     private static func encodeGIF(_ frames: [CGImage], delays: [Double]?,
-                                  from sourceFormat: String) -> TranscodedImage? {
+                                  note: String) -> TranscodedImage? {
         let output = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(
             output, UTType.gif.identifier as CFString, frames.count, nil)
@@ -190,7 +243,6 @@ nonisolated enum ImageTranscoder {
         }
 
         guard CGImageDestinationFinalize(destination) else { return nil }
-        return TranscodedImage(data: output as Data, contentType: "image/gif",
-                               note: "\(sourceFormat) → gif")
+        return TranscodedImage(data: output as Data, contentType: "image/gif", note: note)
     }
 }

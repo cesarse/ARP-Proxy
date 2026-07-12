@@ -25,13 +25,19 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
   real transparency, and animated GIF (frame delays and looping preserved)
   for animations. Still images are downscaled to at most 2048 px to spare
   vintage-era RAM. Detection uses magic bytes first, so mislabeled
-  Content-Type headers don't slip WebP through.
+  Content-Type headers don't slip WebP through. Oversized JPEG, PNG and
+  still-GIF images are downscaled to the configured maximum as well
+  (opaque → JPEG, transparent → GIF); images already within the limit
+  pass through byte-identical, and animated GIFs are never touched.
 - **HTML is simplified with SwiftSoup**: scripts, stylesheets, `<meta>`,
   inline SVG, `<template>` and other modern machinery are removed;
   `<noscript>` fallbacks are unwrapped; HTML5 semantic containers become
   `<div>`s; lazy-loaded images get a real `src`; iframes become links;
   `<button>` becomes `<input type=submit>`; hidden elements are dropped
   before `style`/`class`/`on*`/`data-*`/`aria-*` attributes are stripped.
+  `width`/`height` attributes on `<img>` are removed too — modern sites size
+  images with CSS and the attributes often describe a different crop than
+  the served file, which would stretch the image in a CSS-less browser.
   The result is serialized as pure ASCII with decimal character entities
   and served as `iso-8859-1`, safe for pre-Unicode browsers (typographic
   quotes and dashes are transliterated to ASCII). Pages typically shrink
@@ -45,6 +51,23 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
 Open `ARP Proxy.xcodeproj` in Xcode 26 and press Run. The project uses
 ad-hoc signing ("Sign to Run Locally"), so no developer team is required.
 The app is sandboxed with incoming + outgoing network entitlements.
+
+## Settings
+
+ARP Proxy → Settings… (⌘,) opens a settings window where you can choose:
+
+- the **port** (changing it restarts the proxy),
+- whether to **convert modern images**, the **JPEG quality** (30–100 %)
+  and the **maximum image size** (640–4096 px),
+- whether to **simplify HTML** and which dialect to target — **HTML 3.2**
+  (also unwraps HTML 4 inline tags like `<q>`, `<abbr>`, `<ins>`, `<del>`,
+  `<span>`) or **HTML 4.01 Transitional**; the matching DOCTYPE is emitted,
+- whether to **remove image size attributes** (on by default — fixes
+  stretched images on CSS-sized sites, at the cost of some reflow while a
+  page loads).
+
+Settings are persisted and apply to the next request — no restart needed
+(except the port). The UI uses Liquid Glass, so the app requires macOS 26.
 
 ## Using it from a UTM guest
 

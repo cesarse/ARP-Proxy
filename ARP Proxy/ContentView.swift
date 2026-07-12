@@ -9,16 +9,12 @@ struct ContentView: View {
             HStack {
                 statusView
                 Spacer()
-                Text("Port:")
-                TextField("Port:", value: $server.port, format: .number.grouping(.never))
-                    .textFieldStyle(.roundedBorder)
-                    .frame(width: 70)
-                    .disabled(server.isRunning)
                 Button {
                     server.toggle()
                 } label: {
                     server.isRunning ? Text("Stop Proxy") : Text("Start Proxy")
                 }
+                .buttonStyle(.glassProminent)
                 .keyboardShortcut(.defaultAction)
             }
 
@@ -55,7 +51,7 @@ struct ContentView: View {
         switch server.state {
         case .running:
             Label {
-                Text("Running on port \(server.port, format: .number.grouping(.never))")
+                Text("Running on port \(server.settings.port, format: .number.grouping(.never))")
             } icon: {
                 Circle().fill(.green).frame(width: 10, height: 10)
             }
@@ -79,7 +75,7 @@ struct ContentView: View {
             Text("Set your vintage browser's HTTP proxy to one of these addresses:")
             ForEach(interfaces) { iface in
                 HStack(spacing: 8) {
-                    Text(verbatim: "\(iface.address):\(server.port)")
+                    Text(verbatim: "\(iface.address):\(server.settings.port)")
                         .font(.system(.body, design: .monospaced))
                         .textSelection(.enabled)
                     Text(verbatim: iface.label)
@@ -87,13 +83,13 @@ struct ContentView: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            Text("From a UTM guest on the emulated network, use \("10.0.2.2:\(server.port)").")
+            Text("From a UTM guest on the emulated network, use \("10.0.2.2:\(server.settings.port)").")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
-        .padding(10)
+        .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 8))
+        .glassEffect(.regular, in: .rect(cornerRadius: 12))
     }
 
     @ViewBuilder

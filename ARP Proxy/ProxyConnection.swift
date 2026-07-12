@@ -98,11 +98,14 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
 
     func run() async {
         connection.start(queue: DispatchQueue(label: "ARP Proxy.connection"))
+        // Snapshot per connection: settings changes apply to the next request
+        // without restarting the proxy.
+        let settings = ProxySettings.load()
         do {
             // nil means the client connected and closed without sending anything
             // (browsers preconnect); not worth logging.
             if let request = try await readRequest() {
-                await handle(request)
+                await handle(request, settings: settings)
             }
         } catch {
             await sendSimplePage(status: 400, title: "Bad Request",
@@ -113,7 +116,7 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
 
     // MARK: - Request handling
 
-    private func handle(_ request: HTTPRequest) async {
+    private func handle(_ request: HTTPRequest, settings: ProxySettings) async {
         if request.method.uppercased() == "CONNECT" {
             await sendSimplePage(
                 status: 501, title: "HTTPS Tunneling Not Supported",
@@ -141,7 +144,8 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
                 guard let http = response as? HTTPURLResponse else {
                     throw ProxyError.badRequest
                 }
-                await deliver(http, body: data, request: request, upstream: candidate)
+                await deliver(http, body: data, request: request,
+                              upstream: candidate, settings: settings)
                 return
             } catch {
                 lastError = error
@@ -198,14 +202,16 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
     // MARK: - Response delivery
 
     private func deliver(_ response: HTTPURLResponse, body: Data,
-                         request: HTTPRequest, upstream: URL) async {
+                         request: HTTPRequest, upstream: URL,
+                         settings: ProxySettings) async {
         var body = body
         var contentTypeOverride: String?
         var transformNote: String?
         let contentType = (response.value(forHTTPHeaderField: "Content-Type") ?? "").lowercased()
         if Self.rewritableContentTypes.contains(where: { contentType.hasPrefix($0) }) {
-            if contentType.hasPrefix("text/html"),
-               let simplified = HTMLSimplifier.simplify(body, contentType: contentType) {
+            if settings.simplifyHTML, contentType.hasPrefix("text/html"),
+               let simplified = HTMLSimplifier.simplify(body, contentType: contentType,
+                                                        settings: settings) {
                 body = simplified
                 // The simplified output is pure ASCII, valid in any charset;
                 // advertise one that every vintage browser knows.
@@ -213,7 +219,11 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
                 transformNote = "simplified"
             }
             body = rewriteSchemes(in: body)
-        } else if let transcoded = ImageTranscoder.transcodeIfNeeded(body, contentType: contentType) {
+        } else if settings.convertImages,
+                  let transcoded = ImageTranscoder.transcodeIfNeeded(
+                      body, contentType: contentType,
+                      jpegQuality: settings.jpegQuality,
+                      maxPixelSize: settings.maxImageDimension) {
             body = transcoded.data
             contentTypeOverride = transcoded.contentType
             transformNote = transcoded.note

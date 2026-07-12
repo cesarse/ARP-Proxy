@@ -9,5 +9,9 @@ struct ARPProxyApp: App {
             ContentView(server: server)
         }
         .windowResizability(.contentMinSize)
+
+        Settings {
+            SettingsView(server: server)
+        }
     }
 }
