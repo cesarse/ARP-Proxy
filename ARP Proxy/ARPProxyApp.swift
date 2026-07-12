@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct RetroProxyApp: App {
+struct ARPProxyApp: App {
     @State private var server = ProxyServer()
 
     var body: some Scene {
