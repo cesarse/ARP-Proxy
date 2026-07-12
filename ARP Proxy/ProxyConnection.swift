@@ -200,9 +200,15 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
     private func deliver(_ response: HTTPURLResponse, body: Data,
                          request: HTTPRequest, upstream: URL) async {
         var body = body
+        var contentTypeOverride: String?
+        var transcodeNote: String?
         let contentType = (response.value(forHTTPHeaderField: "Content-Type") ?? "").lowercased()
         if Self.rewritableContentTypes.contains(where: { contentType.hasPrefix($0) }) {
             body = rewriteSchemes(in: body)
+        } else if let transcoded = ImageTranscoder.transcodeIfNeeded(body, contentType: contentType) {
+            body = transcoded.data
+            contentTypeOverride = transcoded.contentType
+            transcodeNote = transcoded.note
         }
 
         let reason = Self.reasonPhrases[response.statusCode] ?? "OK"
@@ -211,11 +217,15 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
             guard let name = key as? String, let value = value as? String else { continue }
             let lower = name.lowercased()
             guard !Self.droppedResponseHeaders.contains(lower) else { continue }
+            if lower == "content-type", contentTypeOverride != nil { continue }
             var outValue = value
             if lower == "location" || lower == "refresh" || lower == "content-location" {
                 outValue = outValue.replacingOccurrences(of: "https://", with: "http://")
             }
             head += "\(name): \(sanitized(outValue))\r\n"
+        }
+        if let contentTypeOverride {
+            head += "Content-Type: \(contentTypeOverride)\r\n"
         }
         head += "Content-Length: \(body.count)\r\n"
         head += "Connection: close\r\n"
@@ -227,9 +237,12 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
         }
         try? await send(out)
 
+        var note = upstream.scheme == "https" ? "https → http" : "http"
+        if let transcodeNote {
+            note += ", " + transcodeNote
+        }
         log(LogEntry(method: request.method, url: request.target,
-                     status: response.statusCode, bytes: body.count,
-                     note: upstream.scheme == "https" ? "https → http" : "http"))
+                     status: response.statusCode, bytes: body.count, note: note))
     }
 
     /// Replaces every `https://` with `http://` in textual bodies so that

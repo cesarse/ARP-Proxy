@@ -20,13 +20,19 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
   keeps flowing through the proxy.
 - Modern-only headers that confuse or break old clients (HSTS, CSP, alt-svc,
   transfer/content encodings…) are stripped.
+- **WebP, AVIF and HEIC images are transcoded** with ImageIO to formats
+  vintage browsers understand: JPEG for opaque images, GIF for images with
+  real transparency, and animated GIF (frame delays and looping preserved)
+  for animations. Still images are downscaled to at most 2048 px to spare
+  vintage-era RAM. Detection uses magic bytes first, so mislabeled
+  Content-Type headers don't slip WebP through.
 - `CONNECT` (real HTTPS tunneling) is intentionally rejected with a friendly
   error page telling you to use `http://` — old SSL stacks couldn't complete a
   modern TLS handshake anyway.
 
 ## Building
 
-Open `ARPProxy.xcodeproj` in Xcode 26 and press Run. The project uses
+Open `ARP Proxy.xcodeproj` in Xcode 26 and press Run. The project uses
 ad-hoc signing ("Sign to Run Locally"), so no developer team is required.
 The app is sandboxed with incoming + outgoing network entitlements.
 
@@ -39,7 +45,7 @@ The app is sandboxed with incoming + outgoing network entitlements.
    or Netscape → Preferences → Advanced → Proxies → Manual).
    - **Emulated VLAN (default UTM/QEMU networking):** use `10.0.2.2`, port `8080`.
    - **Shared/bridged network:** use one of the Mac addresses listed in the
-     RetroProxy window.
+     ARP Proxy window.
 3. Browse with `http://` URLs. The proxy handles the HTTPS part.
 
 If macOS asks about allowing incoming connections (firewall), accept.
@@ -47,7 +53,7 @@ If macOS asks about allowing incoming connections (firewall), accept.
 ## Localization
 
 The UI is localized with a String Catalog
-([`Localizable.xcstrings`](ARPProxy/Localizable.xcstrings)) in English,
+([`Localizable.xcstrings`](ARP%20Proxy/Localizable.xcstrings)) in English,
 Spanish, French and German. Adding a language is a matter of adding a column
 in Xcode's String Catalog editor.
 
@@ -59,9 +65,9 @@ order of effort:
 - Strip `<script>`, `<style>`, `<link rel="stylesheet">` and modern tags
   server-side (SwiftSoup would make this easy).
 - Convert pages to HTML 3.2 (tables instead of CSS layout, `<font>` tags).
-- Transcode images: old browsers don't know WebP/AVIF; re-encode to GIF/JPEG
-  with ImageIO.
 - Force `charset` conversion to Latin-1/Mac Roman for pre-Unicode browsers.
+- Optionally transcode PNG too, for browsers that predate PNG support
+  (Netscape 2/3, IE 3).
 
 ## Limitations
 
