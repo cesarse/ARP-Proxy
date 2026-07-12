@@ -42,8 +42,8 @@ struct SettingsView: View {
                 Toggle("Simplify HTML for vintage browsers",
                        isOn: $server.settings.simplifyHTML)
                 Picker("HTML version", selection: $server.settings.htmlVersion) {
-                    Text(verbatim: "HTML 3.2").tag(ProxySettings.HTMLVersion.html32)
-                    Text(verbatim: "HTML 4.01").tag(ProxySettings.HTMLVersion.html401)
+                    Text(verbatim: "HTML 3.2").tag(HTMLVersion.html32)
+                    Text(verbatim: "HTML 4.01").tag(HTMLVersion.html401)
                 }
                 .pickerStyle(.segmented)
                 .disabled(!server.settings.simplifyHTML)
