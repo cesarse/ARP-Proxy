@@ -133,24 +133,24 @@
         }
       }
     },
-    "Running on port %lld" : {
+    "Running on port %@" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Läuft auf Port %lld"
+            "value" : "Läuft auf Port %@"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En ejecución en el puerto %lld"
+            "value" : "En ejecución en el puerto %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En cours d’exécution sur le port %lld"
+            "value" : "En cours d’exécution sur le port %@"
           }
         }
       }

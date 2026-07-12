@@ -50,7 +50,7 @@ struct ContentView: View {
         switch server.state {
         case .running:
             Label {
-                Text("Running on port \(server.port)")
+                Text("Running on port \(server.port, format: .number.grouping(.never))")
             } icon: {
                 Circle().fill(.green).frame(width: 10, height: 10)
             }
