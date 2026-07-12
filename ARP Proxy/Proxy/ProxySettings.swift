@@ -5,11 +5,6 @@ import Foundation
 /// the port, which requires rebinding the listener).
 nonisolated struct ProxySettings: Sendable, Equatable {
 
-    enum HTMLVersion: String, Sendable, CaseIterable {
-        case html32
-        case html401
-    }
-
     var port: Int = 8080
     var convertImages: Bool = true
     var jpegQuality: Double = 0.8

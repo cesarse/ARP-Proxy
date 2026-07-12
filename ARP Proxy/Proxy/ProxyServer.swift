@@ -2,25 +2,9 @@ import Foundation
 import Network
 import Observation
 
-nonisolated struct LogEntry: Identifiable, Sendable {
-    let id = UUID()
-    let date = Date()
-    var method: String
-    var url: String
-    var status: Int?
-    var bytes: Int?
-    var note: String?
-}
-
 @Observable
 final class ProxyServer {
-    enum State: Equatable {
-        case stopped
-        case running
-        case failed(String)
-    }
-
-    private(set) var state: State = .stopped
+    private(set) var state: ProxyServerState = .stopped
     private(set) var entries: [LogEntry] = []
 
     var settings: ProxySettings = ProxySettings.load() {

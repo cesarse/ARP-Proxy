@@ -46,6 +46,25 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
   error page telling you to use `http://` — old SSL stacks couldn't complete a
   modern TLS handshake anyway.
 
+## Project layout
+
+One type per file, grouped by responsibility:
+
+- `App/` — the SwiftUI entry point.
+- `Views/` — main window, request-log row, settings window.
+- `Proxy/` — listener, per-connection handling, request model, settings,
+  network-interface discovery.
+- `Images/` — the transcoding strategies (one per format) composing two
+  shared behaviors (modern conversion, legacy downscaling), small
+  single-purpose helpers (still decoder, metadata reader, transparency
+  detector, GIF builder, JPEG encoder), and the facade with the
+  format→strategy registry.
+- `HTML/` — the simplification pipeline: dialect strategies (3.2 / 4.01)
+  contribute a DOCTYPE and version passes; the engine runs an ordered
+  `HTML/Passes/` pipeline (one small pass type per transformation),
+  then serializes to vintage-safe ASCII.
+- `Resources/` — asset catalog and the localization string catalog.
+
 ## Building
 
 Open `ARP Proxy.xcodeproj` in Xcode 26 and press Run. The project uses

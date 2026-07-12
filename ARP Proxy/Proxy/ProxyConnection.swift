@@ -6,25 +6,6 @@ import Network
 /// back a downgraded HTTP/1.0 response that vintage browsers understand.
 nonisolated final class ProxyConnection: @unchecked Sendable {
 
-    nonisolated struct HTTPRequest: Sendable {
-        var method: String
-        var target: String
-        var version: String
-        var headers: [(name: String, value: String)]
-        var body: Data
-
-        func value(for name: String) -> String? {
-            headers.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.value
-        }
-    }
-
-    nonisolated enum ProxyError: Error {
-        case headersTooLarge
-        case bodyTooLarge
-        case unexpectedEOF
-        case badRequest
-    }
-
     private let connection: NWConnection
     private let log: @Sendable (LogEntry) -> Void
 
@@ -45,20 +26,6 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
         config.timeoutIntervalForRequest = 30
         return URLSession(configuration: config)
     }()
-
-    /// Redirects are passed through to the browser (with the Location header
-    /// rewritten to http://) instead of being followed by URLSession.
-    private nonisolated final class PassThroughRedirects: NSObject, URLSessionTaskDelegate {
-        func urlSession(
-            _ session: URLSession,
-            task: URLSessionTask,
-            willPerformHTTPRedirection response: HTTPURLResponse,
-            newRequest request: URLRequest,
-            completionHandler: @escaping @Sendable (URLRequest?) -> Void
-        ) {
-            completionHandler(nil)
-        }
-    }
 
     // MARK: - Header policies
 
@@ -189,9 +156,9 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
     private func makeUpstreamRequest(url: URL, from request: HTTPRequest) -> URLRequest {
         var upstream = URLRequest(url: url)
         upstream.httpMethod = request.method
-        for (name, value) in request.headers
-        where !Self.droppedRequestHeaders.contains(name.lowercased()) {
-            upstream.addValue(value, forHTTPHeaderField: name)
+        for header in request.headers
+        where !Self.droppedRequestHeaders.contains(header.name.lowercased()) {
+            upstream.addValue(header.value, forHTTPHeaderField: header.name)
         }
         if !request.body.isEmpty {
             upstream.httpBody = request.body
@@ -327,12 +294,12 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
         let parts = requestLine.split(separator: " ", omittingEmptySubsequences: true).map(String.init)
         guard parts.count >= 2 else { throw ProxyError.badRequest }
 
-        var headers: [(name: String, value: String)] = []
+        var headers: [HTTPHeader] = []
         for line in lines.dropFirst() where !line.isEmpty {
             guard let colon = line.firstIndex(of: ":") else { continue }
             let name = String(line[..<colon]).trimmingCharacters(in: .whitespaces)
             let value = String(line[line.index(after: colon)...]).trimmingCharacters(in: .whitespaces)
-            headers.append((name, value))
+            headers.append(HTTPHeader(name: name, value: value))
         }
 
         var body = Data(buffer[headerEnd!.upperBound...])
