@@ -26,6 +26,16 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
   for animations. Still images are downscaled to at most 2048 px to spare
   vintage-era RAM. Detection uses magic bytes first, so mislabeled
   Content-Type headers don't slip WebP through.
+- **HTML is simplified with SwiftSoup**: scripts, stylesheets, `<meta>`,
+  inline SVG, `<template>` and other modern machinery are removed;
+  `<noscript>` fallbacks are unwrapped; HTML5 semantic containers become
+  `<div>`s; lazy-loaded images get a real `src`; iframes become links;
+  `<button>` becomes `<input type=submit>`; hidden elements are dropped
+  before `style`/`class`/`on*`/`data-*`/`aria-*` attributes are stripped.
+  The result is serialized as pure ASCII with decimal character entities
+  and served as `iso-8859-1`, safe for pre-Unicode browsers (typographic
+  quotes and dashes are transliterated to ASCII). Pages typically shrink
+  by about half.
 - `CONNECT` (real HTTPS tunneling) is intentionally rejected with a friendly
   error page telling you to use `http://` — old SSL stacks couldn't complete a
   modern TLS handshake anyway.
@@ -57,15 +67,12 @@ The UI is localized with a String Catalog
 Spanish, French and German. Adding a language is a matter of adding a column
 in Xcode's String Catalog editor.
 
-## Ideas for the next step (HTML simplification)
+## Ideas for the next step
 
-Rendering is untouched for now; some options to explore later, roughly in
-order of effort:
-
-- Strip `<script>`, `<style>`, `<link rel="stylesheet">` and modern tags
-  server-side (SwiftSoup would make this easy).
-- Convert pages to HTML 3.2 (tables instead of CSS layout, `<font>` tags).
-- Force `charset` conversion to Latin-1/Mac Roman for pre-Unicode browsers.
+- Rasterize SVG images referenced by `<img src="….svg">` to GIF/JPEG —
+  inline `<svg>` is removed, but image files still reach the browser as SVG.
+- Convert pages further toward HTML 3.2 (tables instead of CSS layout,
+  `<font>` tags).
 - Optionally transcode PNG too, for browsers that predate PNG support
   (Netscape 2/3, IE 3).
 

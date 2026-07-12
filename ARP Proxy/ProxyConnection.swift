@@ -201,14 +201,22 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
                          request: HTTPRequest, upstream: URL) async {
         var body = body
         var contentTypeOverride: String?
-        var transcodeNote: String?
+        var transformNote: String?
         let contentType = (response.value(forHTTPHeaderField: "Content-Type") ?? "").lowercased()
         if Self.rewritableContentTypes.contains(where: { contentType.hasPrefix($0) }) {
+            if contentType.hasPrefix("text/html"),
+               let simplified = HTMLSimplifier.simplify(body, contentType: contentType) {
+                body = simplified
+                // The simplified output is pure ASCII, valid in any charset;
+                // advertise one that every vintage browser knows.
+                contentTypeOverride = "text/html; charset=iso-8859-1"
+                transformNote = "simplified"
+            }
             body = rewriteSchemes(in: body)
         } else if let transcoded = ImageTranscoder.transcodeIfNeeded(body, contentType: contentType) {
             body = transcoded.data
             contentTypeOverride = transcoded.contentType
-            transcodeNote = transcoded.note
+            transformNote = transcoded.note
         }
 
         let reason = Self.reasonPhrases[response.statusCode] ?? "OK"
@@ -238,8 +246,8 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
         try? await send(out)
 
         var note = upstream.scheme == "https" ? "https → http" : "http"
-        if let transcodeNote {
-            note += ", " + transcodeNote
+        if let transformNote {
+            note += ", " + transformNote
         }
         log(LogEntry(method: request.method, url: request.target,
                      status: response.statusCode, bytes: body.count, note: note))
