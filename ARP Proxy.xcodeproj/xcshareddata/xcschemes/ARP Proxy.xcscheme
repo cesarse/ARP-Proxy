@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7A1000052E20000000AB0005"
-            BuildableName = "RetroProxy.app"
-            BlueprintName = "RetroProxy"
-            ReferencedContainer = "container:RetroProxy.xcodeproj">
+            BuildableName = "ARP Proxy.app"
+            BlueprintName = "ARP Proxy"
+            ReferencedContainer = "container:ARP Proxy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,20 +62,11 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7A1000052E20000000AB0005"
-            BuildableName = "RetroProxy.app"
-            BlueprintName = "RetroProxy"
-            ReferencedContainer = "container:RetroProxy.xcodeproj">
+            BuildableName = "ARP Proxy.app"
+            BlueprintName = "ARP Proxy"
+            ReferencedContainer = "container:ARP Proxy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7A1000052E20000000AB0005"
-            BuildableName = "RetroProxy.app"
-            BlueprintName = "RetroProxy"
-            ReferencedContainer = "container:RetroProxy.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

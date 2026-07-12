@@ -27,7 +27,7 @@ final class ProxyServer {
     var isRunning: Bool { state == .running }
 
     private var listener: NWListener?
-    private let queue = DispatchQueue(label: "RetroProxy.listener")
+    private let queue = DispatchQueue(label: "ARP Proxy.listener")
 
     func start() {
         guard listener == nil else { return }

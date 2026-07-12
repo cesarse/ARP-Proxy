@@ -97,7 +97,7 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
     // MARK: - Lifecycle
 
     func run() async {
-        connection.start(queue: DispatchQueue(label: "RetroProxy.connection"))
+        connection.start(queue: DispatchQueue(label: "ARP Proxy.connection"))
         do {
             // nil means the client connected and closed without sending anything
             // (browsers preconnect); not worth logging.
@@ -106,7 +106,7 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
             }
         } catch {
             await sendSimplePage(status: 400, title: "Bad Request",
-                                 message: "RetroProxy could not parse the request.")
+                                 message: "ARP Proxy could not parse the request.")
         }
         connection.cancel()
     }
@@ -118,7 +118,7 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
             await sendSimplePage(
                 status: 501, title: "HTTPS Tunneling Not Supported",
                 message: "Request the page with http:// instead of https://. "
-                    + "RetroProxy upgrades the connection to HTTPS for you.")
+                    + "ARP Proxy upgrades the connection to HTTPS for you.")
             log(LogEntry(method: request.method, url: request.target,
                          status: 501, note: "CONNECT rejected"))
             return
@@ -260,7 +260,7 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
         let html = """
         <html><head><title>\(title)</title></head>\
         <body><h1>\(title)</h1><p>\(message)</p>\
-        <hr><p><i>RetroProxy</i></p></body></html>
+        <hr><p><i>ARP Proxy</i></p></body></html>
         """
         let body = Data(html.utf8)
         let reason = Self.reasonPhrases[status] ?? "Error"
