@@ -1,10 +1,30 @@
 import Foundation
+import SystemConfiguration
+
+/// An IPv4 address bound to a named network interface, ready to show the user.
+nonisolated struct NetworkInterfaceAddress: Identifiable, Sendable, Hashable {
+    var id: String { bsdName + "/" + address }
+    /// BSD interface name, e.g. "en0", "bridge100".
+    let bsdName: String
+    /// Human-friendly interface name, e.g. "Wi-Fi", "UTM shared network".
+    /// Empty when we have nothing better than the BSD name.
+    let displayName: String
+    /// Dotted-quad IPv4 address, e.g. "192.168.1.23".
+    let address: String
+
+    /// "en0 — Wi-Fi" style label; just "en0" when no friendly name is known.
+    var label: String {
+        displayName.isEmpty ? bsdName : "\(bsdName) — \(displayName)"
+    }
+}
 
 nonisolated enum NetworkInfo {
-    /// IPv4 addresses of the Mac's active non-loopback interfaces, so the user
-    /// can point the guest OS at one of them.
-    static func ipv4Addresses() -> [String] {
-        var addresses: [String] = []
+    /// IPv4 addresses of the Mac's active non-loopback interfaces, each tagged
+    /// with the interface it belongs to, so the user can pick the one their
+    /// guest OS can actually reach.
+    static func ipv4Interfaces() -> [NetworkInterfaceAddress] {
+        let friendly = friendlyNames()
+        var result: [NetworkInterfaceAddress] = []
         var interfaces: UnsafeMutablePointer<ifaddrs>?
         guard getifaddrs(&interfaces) == 0, let first = interfaces else { return [] }
         defer { freeifaddrs(interfaces) }
@@ -16,18 +36,51 @@ nonisolated enum NetworkInfo {
                   address.pointee.sa_family == sa_family_t(AF_INET)
             else { continue }
 
+            let bsdName = String(cString: pointer.pointee.ifa_name)
+
             var host = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-            if getnameinfo(address, socklen_t(address.pointee.sa_len),
-                           &host, socklen_t(host.count), nil, 0, NI_NUMERICHOST) == 0 {
-                let name = host.withUnsafeBufferPointer {
-                    String(decoding: $0.prefix(while: { $0 != 0 }).map { UInt8(bitPattern: $0) },
-                           as: UTF8.self)
-                }
-                if !name.isEmpty, !addresses.contains(name) {
-                    addresses.append(name)
-                }
+            guard getnameinfo(address, socklen_t(address.pointee.sa_len),
+                              &host, socklen_t(host.count), nil, 0, NI_NUMERICHOST) == 0
+            else { continue }
+            let ip = host.withUnsafeBufferPointer {
+                String(decoding: $0.prefix(while: { $0 != 0 }).map { UInt8(bitPattern: $0) },
+                       as: UTF8.self)
+            }
+            guard !ip.isEmpty else { continue }
+
+            let entry = NetworkInterfaceAddress(
+                bsdName: bsdName,
+                displayName: displayName(for: bsdName, friendly: friendly),
+                address: ip)
+            if !result.contains(entry) {
+                result.append(entry)
             }
         }
-        return addresses
+        return result
+    }
+
+    /// Map of BSD name → system-provided localized name ("Wi-Fi", "Ethernet",
+    /// "Thunderbolt Bridge", …) for the interfaces macOS knows about.
+    private static func friendlyNames() -> [String: String] {
+        guard let interfaces = SCNetworkInterfaceCopyAll() as? [SCNetworkInterface] else { return [:] }
+        var map: [String: String] = [:]
+        for interface in interfaces {
+            if let bsd = SCNetworkInterfaceGetBSDName(interface) as String?,
+               let name = SCNetworkInterfaceGetLocalizedDisplayName(interface) as String? {
+                map[bsd] = name
+            }
+        }
+        return map
+    }
+
+    /// Prefer the system's name; otherwise recognise the interfaces UTM/QEMU
+    /// and VPNs create, which macOS doesn't list in its network preferences.
+    private static func displayName(for bsdName: String, friendly: [String: String]) -> String {
+        if let name = friendly[bsdName] { return name }
+        if bsdName.hasPrefix("bridge") { return String(localized: "UTM shared network") }
+        if bsdName.hasPrefix("utun") || bsdName.hasPrefix("ipsec") || bsdName.hasPrefix("ppp") {
+            return String(localized: "VPN")
+        }
+        return ""
     }
 }

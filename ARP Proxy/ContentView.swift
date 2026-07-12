@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @Bindable var server: ProxyServer
-    @State private var addresses: [String] = []
+    @State private var interfaces: [NetworkInterfaceAddress] = []
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -40,7 +40,7 @@ struct ContentView: View {
         .padding()
         .frame(minWidth: 660, minHeight: 460)
         .task {
-            addresses = NetworkInfo.ipv4Addresses()
+            interfaces = NetworkInfo.ipv4Interfaces()
             server.start()
         }
     }
@@ -72,10 +72,15 @@ struct ContentView: View {
     private var addressesBox: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Set your vintage browser's HTTP proxy to one of these addresses:")
-            ForEach(addresses, id: \.self) { address in
-                Text(verbatim: "\(address):\(server.port)")
-                    .font(.system(.body, design: .monospaced))
-                    .textSelection(.enabled)
+            ForEach(interfaces) { iface in
+                HStack(spacing: 8) {
+                    Text(verbatim: "\(iface.address):\(server.port)")
+                        .font(.system(.body, design: .monospaced))
+                        .textSelection(.enabled)
+                    Text(verbatim: iface.label)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
             Text("From a UTM guest on the emulated network, use \("10.0.2.2:\(server.port)").")
                 .font(.footnote)
