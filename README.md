@@ -51,9 +51,12 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
 One type per file, grouped by responsibility:
 
 - `App/` — the SwiftUI entry point.
-- `Views/` — main window, request-log row, settings window.
-- `Proxy/` — listener, per-connection handling, request model, settings,
-  network-interface discovery.
+- `Views/` — one component per file: main window, status line, addresses
+  panel, request log and its rows, settings window and its sections.
+- `Proxy/` — the connection orchestrator plus one collaborator per job:
+  browser socket, request reader, upstream URL resolver, HTTPS upgrader,
+  upstream fetcher, body transformer, response-head builder, error page,
+  settings, network-interface discovery.
 - `Images/` — the transcoding strategies (one per format) composing two
   shared behaviors (modern conversion, legacy downscaling), small
   single-purpose helpers (still decoder, metadata reader, transparency
