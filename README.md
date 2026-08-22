@@ -108,9 +108,9 @@ If macOS asks about allowing incoming connections (firewall), accept.
 ## Localization
 
 The UI is localized with a String Catalog
-([`Localizable.xcstrings`](ARP%20Proxy/Localizable.xcstrings)) in English,
-Spanish, French and German. Adding a language is a matter of adding a column
-in Xcode's String Catalog editor.
+([`Localizable.xcstrings`](ARP%20Proxy/Resources/Localizable.xcstrings)) in
+English, Spanish, French, German, Italian and Brazilian Portuguese. Adding a
+language is a matter of adding a column in Xcode's String Catalog editor.
 
 ## Ideas for the next step
 

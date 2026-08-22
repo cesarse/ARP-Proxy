@@ -20,6 +20,18 @@
             "state" : "translated",
             "value" : "La modification du port redémarre le proxy."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La modifica della porta riavvia il proxy."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar a porta reinicia o proxy."
+          }
         }
       }
     },
@@ -41,6 +53,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effacer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svuota"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar"
           }
         }
       }
@@ -64,6 +88,18 @@
             "state" : "translated",
             "value" : "Connexion"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connessione"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conexão"
+          }
         }
       }
     },
@@ -85,6 +121,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Convertir les images modernes (WebP, AVIF, HEIC)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Converti le immagini moderne (WebP, AVIF, HEIC)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Converter imagens modernas (WebP, AVIF, HEIC)"
           }
         }
       }
@@ -108,6 +156,18 @@
             "state" : "translated",
             "value" : "Erreur : %@"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errore: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro: %@"
+          }
         }
       }
     },
@@ -130,6 +190,18 @@
             "state" : "translated",
             "value" : "Depuis un invité UTM sur le réseau émulé, utilisez %@."
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da un guest UTM sulla rete emulata, usa %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em um convidado do UTM na rede emulada, use %@."
+          }
         }
       }
     },
@@ -148,6 +220,18 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTML"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTML"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "HTML"
@@ -174,6 +258,18 @@
             "state" : "translated",
             "value" : "Version HTML"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione HTML"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão do HTML"
+          }
         }
       }
     },
@@ -195,6 +291,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Images"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immagini"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imagens"
           }
         }
       }
@@ -218,6 +326,18 @@
             "state" : "translated",
             "value" : "Qualité JPEG"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qualità JPEG"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qualidade JPEG"
+          }
         }
       }
     },
@@ -240,6 +360,18 @@
             "state" : "translated",
             "value" : "Taille maximale des images"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimensione massima delle immagini"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamanho máximo da imagem"
+          }
         }
       }
     },
@@ -254,13 +386,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aún no hay solicitudes."
+            "value" : "Aún no hay peticiones."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucune requête pour le moment."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ancora nessuna richiesta."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhuma requisição ainda."
           }
         }
       }
@@ -284,6 +428,18 @@
             "state" : "translated",
             "value" : "Port :"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porta:"
+          }
         }
       }
     },
@@ -306,6 +462,18 @@
             "state" : "translated",
             "value" : "Supprimer les attributs de taille des images"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi gli attributi di dimensione delle immagini"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover os atributos de tamanho das imagens"
+          }
         }
       }
     },
@@ -320,13 +488,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Solicitudes"
+            "value" : "Peticiones"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Requêtes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Richieste"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Requisições"
           }
         }
       }
@@ -350,6 +530,18 @@
             "state" : "translated",
             "value" : "En cours d’exécution sur le port %@"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In esecuzione sulla porta %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Em execução na porta %@"
+          }
         }
       }
     },
@@ -371,6 +563,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Corrige les images déformées sur les sites qui définissent leur taille en CSS, au prix d’un léger réagencement pendant le chargement."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corregge le immagini deformate sui siti che ne definiscono le dimensioni con i CSS, al costo di un certo riposizionamento durante il caricamento."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrige imagens distorcidas em sites que definem o tamanho por CSS, ao custo de algum rearranjo do layout durante o carregamento."
           }
         }
       }
@@ -394,6 +598,18 @@
             "state" : "translated",
             "value" : "Réglez le proxy HTTP de votre navigateur ancien sur l’une de ces adresses :"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imposta il proxy HTTP del tuo browser d'epoca su uno di questi indirizzi:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configure o proxy HTTP do seu navegador antigo com um destes endereços:"
+          }
         }
       }
     },
@@ -415,6 +631,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Simplifier le HTML pour les navigateurs anciens"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semplifica l'HTML per i browser d'epoca"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simplificar o HTML para navegadores antigos"
           }
         }
       }
@@ -438,6 +666,18 @@
             "state" : "translated",
             "value" : "Démarrer le proxy"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avvia proxy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar proxy"
+          }
         }
       }
     },
@@ -459,6 +699,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Arrêter le proxy"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arresta proxy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parar proxy"
           }
         }
       }
@@ -482,6 +734,18 @@
             "state" : "translated",
             "value" : "Arrêté"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrestato"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parado"
+          }
         }
       }
     },
@@ -504,6 +768,18 @@
             "state" : "translated",
             "value" : "Réseau partagé UTM"
           }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rete condivisa UTM"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rede compartilhada do UTM"
+          }
         }
       }
     },
@@ -522,6 +798,18 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN"
+          }
+        },
+        "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN"
