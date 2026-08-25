@@ -67,6 +67,8 @@ One type per file, grouped by responsibility:
   `HTML/Passes/` pipeline (one small pass type per transformation),
   then serializes to vintage-safe ASCII.
 - `Resources/` — asset catalog and the localization string catalog.
+- `Benchmarks/` — frozen captures of real pages and the harness that scores
+  the simplification pipeline against them ([details](Benchmarks/README.md)).
 
 ## Building
 
@@ -111,6 +113,20 @@ The UI is localized with a String Catalog
 ([`Localizable.xcstrings`](ARP%20Proxy/Resources/Localizable.xcstrings)) in
 English, Spanish, French, German, Italian and Brazilian Portuguese. Adding a
 language is a matter of adding a column in Xcode's String Catalog editor.
+
+## Benchmarks
+
+`swift run arp-bench` runs six frozen captures of real pages — CNN, Wikipedia,
+Hacker News, DuckDuckGo, BBC, GitHub — through the real `BodyTransformer` and
+reports how each dialect did, in both metrics (byte ratio, elapsed time,
+element and image counts) and hard invariants (pure ASCII, no surviving
+`https://`, nothing outside the target DTD, deterministic output). It exits
+non-zero on a broken invariant or drifted output, so it doubles as a CI gate.
+
+The `Package.swift` at the repo root exists only for this: it compiles the
+pipeline from the app's own sources, so there is no second copy to drift. The
+app itself is still built from the Xcode project. See
+[`Benchmarks/README.md`](Benchmarks/README.md).
 
 ## Ideas for the next step
 

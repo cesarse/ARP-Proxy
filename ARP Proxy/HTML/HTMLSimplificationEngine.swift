@@ -35,6 +35,12 @@ nonisolated struct HTMLSimplificationEngine: Sendable {
     /// lazy-image resolution reads data-*, so both run before attribute
     /// pruning wipes those attributes out; <noscript> is unwrapped before
     /// the tag sweep so anything it spills out gets cleaned too.
+    ///
+    /// The unknown-element sweep runs last of the structural passes, and
+    /// after the dialect's own: it would happily unwrap a <q> that
+    /// `DowngradeHTML4InlineTagsPass` still needs to turn into quote marks,
+    /// and it must see the <div>s that `RenameSemanticTagsPass` produces
+    /// rather than the HTML5 containers they came from.
     private func makePipeline() -> HTMLPassPipeline {
         HTMLPassPipeline([
             RemoveInvisibleElementsPass(),
@@ -47,6 +53,7 @@ nonisolated struct HTMLSimplificationEngine: Sendable {
             RemoveModernTagsPass(),
             RenameSemanticTagsPass(),
         ] + dialect.versionPasses + [
+            UnwrapUnknownElementsPass(vocabulary: dialect.vocabulary),
             PruneAttributesPass(),
             RemoveCommentsPass(),
             ReplaceDoctypePass(doctype: dialect.doctype),

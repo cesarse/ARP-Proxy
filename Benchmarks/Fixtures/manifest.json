@@ -1,0 +1,8 @@
+[
+  {"name": "cnn-homepage", "url": "https://www.cnn.com/", "contentType": "text/html; charset=utf-8", "capturedAt": "2026-08-24T23:49:08Z", "note": "Dense card grid, ~5 MB, the layout stress case and the closest to the size cap"},
+  {"name": "wikipedia-article", "url": "https://en.wikipedia.org/wiki/Macintosh", "contentType": "text/html; charset=UTF-8", "capturedAt": "2026-08-24T23:49:09Z", "note": "Text and real tables; should come through near-perfect. The do-no-harm case"},
+  {"name": "hacker-news", "url": "https://news.ycombinator.com/", "contentType": "text/html; charset=utf-8", "capturedAt": "2026-08-24T23:49:09Z", "note": "Already table-based 1997 HTML. Canary: output should barely differ from input"},
+  {"name": "duckduckgo-html", "url": "https://html.duckduckgo.com/html/", "contentType": "text/html; charset=UTF-8", "capturedAt": "2026-08-24T23:49:10Z", "note": "Script-free search results; protocol-relative //duckduckgo.com/l/ redirect links. POST, because that endpoint rate-limits GET and its own forms use method=post"},
+  {"name": "bbc-news", "url": "https://www.bbc.com/news", "contentType": "text/html; charset=utf-8", "capturedAt": "2026-08-24T23:49:11Z", "note": "Second news archetype, for cross-checking CNN-specific heuristics"},
+  {"name": "github-repo", "url": "https://github.com/scinfu/SwiftSoup", "contentType": "text/html; charset=utf-8", "capturedAt": "2026-08-24T23:49:11Z", "note": "Deeply nested divs and code blocks; a developer-facing layout"}
+]

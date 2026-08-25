@@ -1,0 +1,74 @@
+[
+  {
+    "dialect" : "html32",
+    "fixture" : "bbc-news",
+    "outputBytes" : 40441,
+    "outputSHA256" : "cf0933186681b91c971298c1a7b6ffbb6cc3a1df2ce9711f7841be18c376ba50"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "bbc-news",
+    "outputBytes" : 41437,
+    "outputSHA256" : "6fd5ed0130f13fef204775633c85f047317adc8e06ff202d95bbfde9f8d58fe9"
+  },
+  {
+    "dialect" : "html32",
+    "fixture" : "cnn-homepage",
+    "outputBytes" : 141488,
+    "outputSHA256" : "fbf5f8e59ea736aa468c2922b13837532ec756871aa4770490b683a8130846c5"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "cnn-homepage",
+    "outputBytes" : 148009,
+    "outputSHA256" : "59ddd108052dbb9a6182e834f4675a81dbbfd785fa78ded153443b0291700c71"
+  },
+  {
+    "dialect" : "html32",
+    "fixture" : "duckduckgo-html",
+    "outputBytes" : 23220,
+    "outputSHA256" : "b6edf913f2a781d3f8ca789d1736549888c5d4e39d09aeca79687371e77be866"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "duckduckgo-html",
+    "outputBytes" : 23410,
+    "outputSHA256" : "5ca9dae83027cd92258433c3fd0061db2dbb3d60071b860cc5a20d86fa5a3dbc"
+  },
+  {
+    "dialect" : "html32",
+    "fixture" : "github-repo",
+    "outputBytes" : 46308,
+    "outputSHA256" : "3d1b0603edf893855eaeed7044c925e7f214a2ad5cf3a3500479c1feb7e79477"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "github-repo",
+    "outputBytes" : 56154,
+    "outputSHA256" : "e3338d40009af8f57ef6119515f3d3766dc546705b467227d62c415f8d077861"
+  },
+  {
+    "dialect" : "html32",
+    "fixture" : "hacker-news",
+    "outputBytes" : 20478,
+    "outputSHA256" : "b02f37061c0bc8d90a44c6b18df010ff0f4c5bf0688382700cbede4bca52b37e"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "hacker-news",
+    "outputBytes" : 25917,
+    "outputSHA256" : "5e7f3a99d07c0adbffdc02d0f56c26bf4d6add50ba9b7e04d49591771ba5c68d"
+  },
+  {
+    "dialect" : "html32",
+    "fixture" : "wikipedia-article",
+    "outputBytes" : 487238,
+    "outputSHA256" : "2482fd5b5b49c88fbf3723502c5d5fef52a37b3373f442853ac370039b278fc8"
+  },
+  {
+    "dialect" : "html401",
+    "fixture" : "wikipedia-article",
+    "outputBytes" : 641961,
+    "outputSHA256" : "2ce3020fedf35ee73e593b352e679e78e78ec4f60b5eea15ea46fb995375cafb"
+  }
+]

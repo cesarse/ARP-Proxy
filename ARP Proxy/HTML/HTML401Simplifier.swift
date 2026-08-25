@@ -8,6 +8,8 @@ nonisolated struct HTML401Simplifier: HTMLSimplifying {
                            systemId: "http://www.w3.org/TR/html4/loose.dtd")
     }
 
+    var vocabulary: Set<String> { HTMLVocabulary.html401Transitional }
+
     var versionPasses: [any HTMLPass] {
         []
     }

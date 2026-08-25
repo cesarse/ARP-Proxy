@@ -7,6 +7,8 @@ nonisolated struct HTML32Simplifier: HTMLSimplifying {
         DoctypeDeclaration(publicId: "-//W3C//DTD HTML 3.2 Final//EN", systemId: "")
     }
 
+    var vocabulary: Set<String> { HTMLVocabulary.html32 }
+
     var versionPasses: [any HTMLPass] {
         [DowngradeHTML4InlineTagsPass()]
     }
