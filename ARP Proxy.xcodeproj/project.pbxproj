@@ -3,15 +3,17 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 100;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		7A1000222E20000000AB0022 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 7A1000212E20000000AB0021 /* SwiftSoup */; };
+		FE72D1EC303AF0010049678B /* ARP Proxy App Icon v1.icon in Resources */ = {isa = PBXBuildFile; fileRef = FE72D1EB303AF0010049678B /* ARP Proxy App Icon v1.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7A1000042E20000000AB0004 /* ARP Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ARP Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE72D1EA303AEBCC0049678B /* ARP Proxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ARP Proxy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE72D1EB303AF0010049678B /* ARP Proxy App Icon v1.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = "ARP Proxy App Icon v1.icon"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -25,11 +27,9 @@
 /* Begin PBXFrameworksBuildPhase section */
 		7A1000082E20000000AB0008 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				7A1000222E20000000AB0022 /* SwiftSoup in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -37,17 +37,10 @@
 		7A1000022E20000000AB0002 = {
 			isa = PBXGroup;
 			children = (
+				FE72D1EB303AF0010049678B /* ARP Proxy App Icon v1.icon */,
 				7A1000012E20000000AB0001 /* ARP Proxy */,
-				7A1000032E20000000AB0003 /* Products */,
+				FE72D1EA303AEBCC0049678B /* ARP Proxy.app */,
 			);
-			sourceTree = "<group>";
-		};
-		7A1000032E20000000AB0003 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7A1000042E20000000AB0004 /* ARP Proxy.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -63,8 +56,6 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				7A1000012E20000000AB0001 /* ARP Proxy */,
 			);
@@ -73,7 +64,7 @@
 				7A1000212E20000000AB0021 /* SwiftSoup */,
 			);
 			productName = "ARP Proxy";
-			productReference = 7A1000042E20000000AB0004 /* ARP Proxy.app */;
+			productReference = FE72D1EA303AEBCC0049678B /* ARP Proxy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,8 +99,8 @@
 			packageReferences = (
 				7A1000202E20000000AB0020 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
-			preferredProjectObjectVersion = 77;
-			productRefGroup = 7A1000032E20000000AB0003 /* Products */;
+			preferredProjectObjectVersion = 100;
+			productRefGroup = 7A1000022E20000000AB0002;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -121,25 +112,22 @@
 /* Begin PBXResourcesBuildPhase section */
 		7A1000092E20000000AB0009 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
+				FE72D1EC303AF0010049678B /* ARP Proxy App Icon v1.icon in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7A1000072E20000000AB0007 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		7A1000112E20000000AB0011 /* Debug */ = {
+		7A1000112E20000000AB0011 /* Debug configuration for PBXProject "ARP Proxy" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -202,7 +190,7 @@
 			};
 			name = Debug;
 		};
-		7A1000122E20000000AB0012 /* Release */ = {
+		7A1000122E20000000AB0012 /* Release configuration for PBXProject "ARP Proxy" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -258,11 +246,12 @@
 			};
 			name = Release;
 		};
-		7A1000142E20000000AB0014 /* Debug */ = {
+		7A1000142E20000000AB0014 /* Debug configuration for PBXNativeTarget "ARP Proxy" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "ARP Proxy App Icon v1";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ARP Proxy/ARPProxy.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -291,11 +280,12 @@
 			};
 			name = Debug;
 		};
-		7A1000152E20000000AB0015 /* Release */ = {
+		7A1000152E20000000AB0015 /* Release configuration for PBXNativeTarget "ARP Proxy" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "ARP Proxy App Icon v1";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = "ARP Proxy/ARPProxy.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -330,19 +320,17 @@
 		7A1000102E20000000AB0010 /* Build configuration list for PBXProject "ARP Proxy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7A1000112E20000000AB0011 /* Debug */,
-				7A1000122E20000000AB0012 /* Release */,
+				7A1000112E20000000AB0011 /* Debug configuration for PBXProject "ARP Proxy" */,
+				7A1000122E20000000AB0012 /* Release configuration for PBXProject "ARP Proxy" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		7A1000132E20000000AB0013 /* Build configuration list for PBXNativeTarget "ARP Proxy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7A1000142E20000000AB0014 /* Debug */,
-				7A1000152E20000000AB0015 /* Release */,
+				7A1000142E20000000AB0014 /* Debug configuration for PBXNativeTarget "ARP Proxy" */,
+				7A1000152E20000000AB0015 /* Release configuration for PBXNativeTarget "ARP Proxy" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

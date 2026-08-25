@@ -1,0 +1,76 @@
+{
+  "fill" : {
+    "linear-gradient" : [
+      "extended-srgb:1.00000,0.80000,0.00000,1.00000",
+      "extended-gray:0.00000,1.00000"
+    ],
+    "orientation" : {
+      "start" : {
+        "x" : 0.5,
+        "y" : 0
+      },
+      "stop" : {
+        "x" : 0.5,
+        "y" : 0.7
+      }
+    }
+  },
+  "groups" : [
+    {
+      "blur-material" : null,
+      "layers" : [
+        {
+          "blend-mode" : "lighten",
+          "hidden" : false,
+          "image-name" : "Image 11.svg",
+          "name" : "Image 11",
+          "opacity" : 0.5,
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              129.6,
+              32.7
+            ]
+          }
+        },
+        {
+          "image-name" : "Image 10.svg",
+          "name" : "Image 10",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              152.6484375,
+              133.296875
+            ]
+          }
+        },
+        {
+          "image-name" : "Image 6.svg",
+          "name" : "Earth",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -76.1875,
+              -90.03125
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "specular" : true,
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}

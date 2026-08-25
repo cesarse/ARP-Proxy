@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Linearity Curve (http://linearity.io/curve) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="459.303 326.555 456.626 612.917" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<path d="M715.457 729.354C759.58 706.316 759.58 706.316 803.703 683.278C839.856 747.571 880.532 810.954 912.163 876.159C919.682 891.658 913.985 898.776 911.792 906.091C908.671 916.497 903.352 923.956 896.462 928.517C883.112 937.356 862.692 947.202 835.6 930.077C831.8 927.675 826.498 921.242 822.687 914.769C799.004 874.538 777.919 832.803 754.533 792.365C742.094 770.857 728.482 750.358 715.457 729.354Z" id="Fill"/>
+<path d="M779.237 704.23C766.767 682.369 780.402 693.85 783.966 691.817L783.966 691.817C782.851 689.145 786.668 687.27 788.103 689.784L902.058 889.554C904.091 893.118 902.85 897.655 899.287 899.688L899.287 899.688C895.723 901.721 891.186 900.48 889.153 896.916L779.237 704.23Z" id="Fill_2"/>
+</defs>
+<g id="Layer">
+<g opacity="1">
+<use fill="#e94420" fill-rule="nonzero" stroke="none" xlink:href="#Fill"/>
+<mask height="256.194" id="StrokeMask" maskUnits="userSpaceOnUse" width="200.471" x="715.457" y="683.278">
+<rect fill="#ffffff" height="256.194" stroke="none" width="200.471" x="715.457" y="683.278"/>
+<use fill="#000000" fill-rule="evenodd" stroke="none" xlink:href="#Fill"/>
+</mask>
+<use fill="none" mask="url(#StrokeMask)" stroke="#e94420" stroke-linecap="butt" stroke-linejoin="round" stroke-width="0" xlink:href="#Fill"/>
+</g>
+<g opacity="1">
+<use fill="#ffffff" fill-rule="nonzero" stroke="none" xlink:href="#Fill_2"/>
+<mask height="246.083" id="StrokeMask_2" maskUnits="userSpaceOnUse" width="136.175" x="769.564" y="657.286">
+<rect fill="#ffffff" height="246.083" stroke="none" width="136.175" x="769.564" y="657.286"/>
+<use fill="#000000" fill-rule="evenodd" stroke="none" xlink:href="#Fill_2"/>
+</mask>
+<use fill="none" mask="url(#StrokeMask_2)" stroke="#ffffff" stroke-linecap="butt" stroke-linejoin="round" stroke-width="0" xlink:href="#Fill_2"/>
+</g>
+<path d="M462.303 533.218C462.303 420.738 553.486 329.555 665.966 329.555C778.446 329.555 869.629 420.738 869.629 533.218C869.629 645.698 778.446 736.881 665.966 736.881C553.486 736.881 462.303 645.698 462.303 533.218Z" fill="none" opacity="1" stroke="#e94420" stroke-linecap="butt" stroke-linejoin="round" stroke-width="6"/>
+</g>
+</svg>
