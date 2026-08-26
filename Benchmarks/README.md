@@ -108,25 +108,36 @@ Workflow: make a change → `swift run arp-bench` → read the drift → inspect
 `Output/` is also the place to grab a page to open in a real vintage browser
 under UTM. Nothing here substitutes for looking at it in Netscape.
 
-## Known failures
+## What it caught
 
-The harness was red on its first run, and the findings are real — verified
-against literal output bytes, not a re-parse. Vintage browsers ignore unknown
-elements, so these are DTD-validity failures rather than blank pages, but the
-project emits a matching DOCTYPE and should honour it.
+The harness was red on its first run. All four findings were real — verified
+against literal output bytes rather than a re-parse — and all four turned out
+to be the same defect: the pipeline removed a hardcoded list of known-bad tags
+and assumed the rest were fine, so it had no notion of what its target DTD
+actually contains.
 
-1. **`<tbody>` is injected by our own parser.** Hacker News' source contains
-   zero `<tbody>`; our HTML 3.2 output contains four. SwiftSoup's HTML5 tree
-   construction inserts them, so the pipeline *creates* an HTML 4.0 tag that
-   3.2 has no notion of. Wikipedia passes 28 through from source.
-2. **HTML5 text tags survive**: `<bdi>`×17 and `<wbr>`×2 on Wikipedia, in both
-   dialects. `RemoveModernTagsPass` doesn't list them.
-3. **`<label>` reaches the 3.2 output** (8 on Wikipedia, 1 on BBC). It is legal
-   in 4.01 but postdates 3.2, so it belongs in `DowngradeHTML4InlineTagsPass`.
-4. **Web Components pass through untouched**: `<react-partial>`,
-   `<include-fragment>`, `<tool-tip>`, `<cookie-consent-link>`, `<ghcc-consent>`,
-   `<react-app>` on GitHub, in both dialects. Any hyphenated custom element
-   will do this.
+1. **`<tbody>` injected by our own parser.** Hacker News' source contained zero
+   `<tbody>`; our HTML 3.2 output contained four. SwiftSoup does HTML5 tree
+   construction, so the pipeline *created* a tag 3.2 has no notion of.
+2. **HTML5 text tags surviving** — `<bdi>`×17, `<wbr>`×2 on Wikipedia, both
+   dialects.
+3. **`<label>` in 3.2 output** (8 Wikipedia, 1 BBC): legal in 4.01, postdates
+   3.2.
+4. **Web Components passing through** — `<react-partial>`,
+   `<include-fragment>`, `<tool-tip>`, `<cookie-consent-link>` and friends on
+   GitHub. Any hyphenated tag a site invents would do this.
+
+`HTMLVocabulary` and `UnwrapUnknownElementsPass` fixed all four at once, and
+the sweep is self-maintaining: the next invented tag is already handled.
+
+It also caught a bug in *itself*. `Measurer` originally counted tags by
+re-parsing the output with SwiftSoup — which re-inserts `<tbody>` — so the
+check would have gone permanently red against a correct pipeline. It now
+counts opening tags in the serialized bytes. When a benchmark and the code
+under test share a parser, the benchmark stops being independent; that is also
+why `DTDVocabulary` here keeps its own transcription of the element sets rather
+than importing `HTMLVocabulary` from the app. Two independent transcriptions
+catch each other's typos.
 
 ## Going deeper
 

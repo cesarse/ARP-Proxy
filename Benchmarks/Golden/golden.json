@@ -2,8 +2,8 @@
   {
     "dialect" : "html32",
     "fixture" : "bbc-news",
-    "outputBytes" : 40441,
-    "outputSHA256" : "cf0933186681b91c971298c1a7b6ffbb6cc3a1df2ce9711f7841be18c376ba50"
+    "outputBytes" : 40410,
+    "outputSHA256" : "9414c309171b01a60da19c311173ef068d2a58e904f28ad30e24a98ceb40566e"
   },
   {
     "dialect" : "html401",
@@ -38,20 +38,20 @@
   {
     "dialect" : "html32",
     "fixture" : "github-repo",
-    "outputBytes" : 46308,
-    "outputSHA256" : "3d1b0603edf893855eaeed7044c925e7f214a2ad5cf3a3500479c1feb7e79477"
+    "outputBytes" : 45685,
+    "outputSHA256" : "0ba837cb2ee89d9d6a7956285213c07cfa42d589c174615b8a86d9a58ea5cdbd"
   },
   {
     "dialect" : "html401",
     "fixture" : "github-repo",
-    "outputBytes" : 56154,
-    "outputSHA256" : "e3338d40009af8f57ef6119515f3d3766dc546705b467227d62c415f8d077861"
+    "outputBytes" : 55561,
+    "outputSHA256" : "e7d696aaefb6bf49fae39d57a535989ce4311a23e817d9e0b69589fe24de92ab"
   },
   {
     "dialect" : "html32",
     "fixture" : "hacker-news",
-    "outputBytes" : 20478,
-    "outputSHA256" : "b02f37061c0bc8d90a44c6b18df010ff0f4c5bf0688382700cbede4bca52b37e"
+    "outputBytes" : 20418,
+    "outputSHA256" : "d8a1bd931c6a13c6d33bcb8d58bd4b9c3a72229efe4335a3659a27a58845b23f"
   },
   {
     "dialect" : "html401",
@@ -62,13 +62,13 @@
   {
     "dialect" : "html32",
     "fixture" : "wikipedia-article",
-    "outputBytes" : 487238,
-    "outputSHA256" : "2482fd5b5b49c88fbf3723502c5d5fef52a37b3373f442853ac370039b278fc8"
+    "outputBytes" : 485861,
+    "outputSHA256" : "28377bca33bdf1b38857f11d8c6ac48c3b413140fdeb573d217219f707a79d2b"
   },
   {
     "dialect" : "html401",
     "fixture" : "wikipedia-article",
-    "outputBytes" : 641961,
-    "outputSHA256" : "2ce3020fedf35ee73e593b352e679e78e78ec4f60b5eea15ea46fb995375cafb"
+    "outputBytes" : 641729,
+    "outputSHA256" : "65589856177a12990db590dbc520ed91b2a479cceda6d0816ace9d4e9fed01d5"
   }
 ]
