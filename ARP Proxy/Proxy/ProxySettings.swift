@@ -15,6 +15,12 @@ nonisolated struct ProxySettings: Sendable, Equatable {
     /// disagree with the served file and stretch it in a CSS-less browser.
     /// Stripping them trades stable layout during load for correct rendering.
     var stripImageDimensions: Bool = true
+    /// Modern pages keep their layout entirely in CSS, which the simplifier
+    /// strips — so a simplified page arrives as one long column. Rebuilding
+    /// the columns as tables is the period-accurate substitute, but the
+    /// original structure has to be inferred from the markup, and a wrong
+    /// guess reads worse than no layout at all. Hence opt-in.
+    var reproduceLayout: Bool = false
 
     private enum Keys {
         static let port = "port"
@@ -24,6 +30,7 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         static let simplifyHTML = "simplifyHTML"
         static let htmlVersion = "htmlVersion"
         static let stripImageDimensions = "stripImageDimensions"
+        static let reproduceLayout = "reproduceLayout"
     }
 
     static func load(from defaults: UserDefaults = .standard) -> ProxySettings {
@@ -50,6 +57,9 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         if defaults.object(forKey: Keys.stripImageDimensions) != nil {
             settings.stripImageDimensions = defaults.bool(forKey: Keys.stripImageDimensions)
         }
+        if defaults.object(forKey: Keys.reproduceLayout) != nil {
+            settings.reproduceLayout = defaults.bool(forKey: Keys.reproduceLayout)
+        }
         return settings.clamped()
     }
 
@@ -61,6 +71,7 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         defaults.set(simplifyHTML, forKey: Keys.simplifyHTML)
         defaults.set(htmlVersion.rawValue, forKey: Keys.htmlVersion)
         defaults.set(stripImageDimensions, forKey: Keys.stripImageDimensions)
+        defaults.set(reproduceLayout, forKey: Keys.reproduceLayout)
     }
 
     func clamped() -> ProxySettings {

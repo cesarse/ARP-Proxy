@@ -443,6 +443,40 @@
         }
       }
     },
+    "Rebuilds column layouts with tables, the way pages were built before CSS. The original structure has to be guessed at, so some pages read better with this off." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baut Spaltenlayouts mit Tabellen nach, so wie Seiten vor CSS gestaltet wurden. Die ursprüngliche Struktur muss dabei erraten werden, daher sind manche Seiten ohne diese Option besser lesbar."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconstruye los diseños de columnas con tablas, como se creaban las páginas antes del CSS. La estructura original debe deducirse, así que algunas páginas se leen mejor con esta opción desactivada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconstruit les mises en page en colonnes avec des tableaux, comme on concevait les pages avant le CSS. La structure d’origine doit être devinée, donc certaines pages se lisent mieux sans cette option."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ricostruisce i layout a colonne con le tabelle, come si realizzavano le pagine prima dei CSS. La struttura originale va indovinata, quindi alcune pagine si leggono meglio con questa opzione disattivata."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconstrói layouts de colunas com tabelas, como as páginas eram feitas antes do CSS. A estrutura original precisa ser deduzida, portanto algumas páginas ficam melhores com esta opção desativada."
+          }
+        }
+      }
+    },
     "Remove image size attributes" : {
       "localizations" : {
         "de" : {
@@ -473,6 +507,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remover os atributos de tamanho das imagens"
+          }
+        }
+      }
+    },
+    "Reproduce page layout with tables" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seitenlayout mit Tabellen nachbilden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproducir el diseño de la página con tablas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproduire la mise en page avec des tableaux"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riproduci il layout della pagina con le tabelle"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproduzir o layout da página com tabelas"
           }
         }
       }
