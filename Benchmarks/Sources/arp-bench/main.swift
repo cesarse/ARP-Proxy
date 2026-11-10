@@ -11,6 +11,10 @@ struct Options {
     var update = false
     var only: String?
     var versions: [HTMLVersion] = HTMLVersion.allCases
+    /// Both layout modes by default: the table-building pass is the riskiest
+    /// thing in the pipeline, so it earns permanent coverage rather than an
+    /// occasional manual run.
+    var layoutModes: [Bool] = [false, true]
 
     static func parse(_ arguments: [String]) -> Options? {
         var options = Options()
@@ -31,6 +35,14 @@ struct Options {
                 case "401", "4.01", "html401": options.versions = [.html401]
                 default: return nil
                 }
+            case "--tables":
+                index += 1
+                guard index < arguments.count else { return nil }
+                switch arguments[index] {
+                case "on": options.layoutModes = [true]
+                case "off": options.layoutModes = [false]
+                default: return nil
+                }
             case "--help", "-h":
                 return nil
             default:
@@ -46,10 +58,12 @@ let usage = """
     arp-bench — benchmark the HTML simplification pipeline
 
     USAGE
-      swift run arp-bench [--only <fixture>] [--dialect 32|401] [--update]
+      swift run arp-bench [--only <fixture>] [--dialect 32|401]
+                          [--tables on|off] [--update]
 
       --only <fixture>   Run a single fixture (its manifest name).
       --dialect 32|401   Run one dialect instead of both.
+      --tables on|off    Run one layout mode instead of both.
       --update           Accept the current output as the new golden.
 
     Exits non-zero when an invariant breaks or a digest drifts. Refresh the
@@ -83,10 +97,13 @@ do {
     var measurements: [Measurement] = []
     for fixture in fixtures {
         for version in options.versions {
-            let (measurement, output) = try measurer.measure(fixture, version: version)
-            measurements.append(measurement)
-            try output.write(to: paths.output
-                .appending(path: "\(fixture.name).\(version.rawValue).html"))
+            for layout in options.layoutModes {
+                let (measurement, output) = try measurer.measure(
+                    fixture, version: version, layout: layout)
+                measurements.append(measurement)
+                try output.write(to: paths.output
+                    .appending(path: "\(fixture.name).\(measurement.modeSlug).html"))
+            }
         }
     }
 

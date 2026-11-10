@@ -8,9 +8,9 @@ nonisolated struct Report: Sendable {
     let goldens: [String: GoldenRecord]
 
     private static let columns = [
-        ("fixture", 20), ("dialect", 10), ("input", 11), ("output", 10),
-        ("ratio", 7), ("ms", 8), ("elements", 9), ("img", 9), ("links", 7),
-        ("golden", 8),
+        ("fixture", 20), ("dialect", 10), ("tables", 7), ("input", 11),
+        ("output", 10), ("ratio", 7), ("ms", 8), ("elements", 9), ("img", 9),
+        ("links", 7), ("golden", 8),
     ]
 
     var text: String {
@@ -49,6 +49,7 @@ nonisolated struct Report: Sendable {
             ? "\(m.images)" : "\(m.images) (\(m.imagesWithoutSource)!)"
         let cells: [(String, Int)] = [
             (m.fixture, 20), (m.shortDialectLabel, 10),
+            (m.layout ? "on" : "-", 7),
             (grouped(m.inputBytes), 11), (grouped(m.outputBytes), 10),
             (String(format: "%.1f%%", m.ratio * 100), 7),
             (String(format: "%.0f", m.milliseconds), 8),
@@ -72,7 +73,7 @@ nonisolated struct Report: Sendable {
             let golden = goldens[GoldenRecord(m).key]!
             let delta = m.outputBytes - golden.outputBytes
             let sign = delta >= 0 ? "+" : ""
-            lines.append("  \(m.fixture) [\(m.dialectLabel)]  "
+            lines.append("  \(m.fixture) [\(m.modeLabel)]  "
                 + "\(grouped(golden.outputBytes)) -> \(grouped(m.outputBytes)) bytes "
                 + "(\(sign)\(grouped(delta)))")
         }
@@ -86,7 +87,7 @@ nonisolated struct Report: Sendable {
         guard !failing.isEmpty else { return [] }
         var lines = ["Broken invariants:"]
         for m in failing {
-            lines.append("  \(m.fixture) [\(m.dialectLabel)]")
+            lines.append("  \(m.fixture) [\(m.modeLabel)]")
             for failure in m.invariantFailures {
                 lines.append("      - \(failure)")
             }

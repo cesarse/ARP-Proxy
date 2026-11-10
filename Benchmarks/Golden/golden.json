@@ -6,10 +6,22 @@
     "outputSHA256" : "9414c309171b01a60da19c311173ef068d2a58e904f28ad30e24a98ceb40566e"
   },
   {
+    "dialect" : "html32.layout",
+    "fixture" : "bbc-news",
+    "outputBytes" : 41873,
+    "outputSHA256" : "64d2c78a9a4e804f7d7fca4ec321f669692eb158ff57e333ac4d5e6dfddcc4d8"
+  },
+  {
     "dialect" : "html401",
     "fixture" : "bbc-news",
     "outputBytes" : 41437,
     "outputSHA256" : "6fd5ed0130f13fef204775633c85f047317adc8e06ff202d95bbfde9f8d58fe9"
+  },
+  {
+    "dialect" : "html401.layout",
+    "fixture" : "bbc-news",
+    "outputBytes" : 42900,
+    "outputSHA256" : "e54126501597f2a6392cf1ab7a1900664e1eb58b6ab6d1f1348cefffc72d13ee"
   },
   {
     "dialect" : "html32",
@@ -18,13 +30,31 @@
     "outputSHA256" : "fbf5f8e59ea736aa468c2922b13837532ec756871aa4770490b683a8130846c5"
   },
   {
+    "dialect" : "html32.layout",
+    "fixture" : "cnn-homepage",
+    "outputBytes" : 142608,
+    "outputSHA256" : "202692e850ceff61c49064f7cbe8c941355188f0d6b5e8ccabc4e1f5e616bdb9"
+  },
+  {
     "dialect" : "html401",
     "fixture" : "cnn-homepage",
     "outputBytes" : 148009,
     "outputSHA256" : "59ddd108052dbb9a6182e834f4675a81dbbfd785fa78ded153443b0291700c71"
   },
   {
+    "dialect" : "html401.layout",
+    "fixture" : "cnn-homepage",
+    "outputBytes" : 149129,
+    "outputSHA256" : "9b5f9cc26283e7a0df3fbea0965905b983534a90b43d155f0be5ea8a106b2861"
+  },
+  {
     "dialect" : "html32",
+    "fixture" : "duckduckgo-html",
+    "outputBytes" : 23220,
+    "outputSHA256" : "b6edf913f2a781d3f8ca789d1736549888c5d4e39d09aeca79687371e77be866"
+  },
+  {
+    "dialect" : "html32.layout",
     "fixture" : "duckduckgo-html",
     "outputBytes" : 23220,
     "outputSHA256" : "b6edf913f2a781d3f8ca789d1736549888c5d4e39d09aeca79687371e77be866"
@@ -36,7 +66,19 @@
     "outputSHA256" : "5ca9dae83027cd92258433c3fd0061db2dbb3d60071b860cc5a20d86fa5a3dbc"
   },
   {
+    "dialect" : "html401.layout",
+    "fixture" : "duckduckgo-html",
+    "outputBytes" : 23410,
+    "outputSHA256" : "5ca9dae83027cd92258433c3fd0061db2dbb3d60071b860cc5a20d86fa5a3dbc"
+  },
+  {
     "dialect" : "html32",
+    "fixture" : "github-repo",
+    "outputBytes" : 45685,
+    "outputSHA256" : "0ba837cb2ee89d9d6a7956285213c07cfa42d589c174615b8a86d9a58ea5cdbd"
+  },
+  {
+    "dialect" : "html32.layout",
     "fixture" : "github-repo",
     "outputBytes" : 45685,
     "outputSHA256" : "0ba837cb2ee89d9d6a7956285213c07cfa42d589c174615b8a86d9a58ea5cdbd"
@@ -48,7 +90,19 @@
     "outputSHA256" : "e7d696aaefb6bf49fae39d57a535989ce4311a23e817d9e0b69589fe24de92ab"
   },
   {
+    "dialect" : "html401.layout",
+    "fixture" : "github-repo",
+    "outputBytes" : 55561,
+    "outputSHA256" : "e7d696aaefb6bf49fae39d57a535989ce4311a23e817d9e0b69589fe24de92ab"
+  },
+  {
     "dialect" : "html32",
+    "fixture" : "hacker-news",
+    "outputBytes" : 20418,
+    "outputSHA256" : "d8a1bd931c6a13c6d33bcb8d58bd4b9c3a72229efe4335a3659a27a58845b23f"
+  },
+  {
+    "dialect" : "html32.layout",
     "fixture" : "hacker-news",
     "outputBytes" : 20418,
     "outputSHA256" : "d8a1bd931c6a13c6d33bcb8d58bd4b9c3a72229efe4335a3659a27a58845b23f"
@@ -60,15 +114,33 @@
     "outputSHA256" : "5e7f3a99d07c0adbffdc02d0f56c26bf4d6add50ba9b7e04d49591771ba5c68d"
   },
   {
+    "dialect" : "html401.layout",
+    "fixture" : "hacker-news",
+    "outputBytes" : 25917,
+    "outputSHA256" : "5e7f3a99d07c0adbffdc02d0f56c26bf4d6add50ba9b7e04d49591771ba5c68d"
+  },
+  {
     "dialect" : "html32",
     "fixture" : "wikipedia-article",
     "outputBytes" : 485861,
     "outputSHA256" : "28377bca33bdf1b38857f11d8c6ac48c3b413140fdeb573d217219f707a79d2b"
   },
   {
+    "dialect" : "html32.layout",
+    "fixture" : "wikipedia-article",
+    "outputBytes" : 486570,
+    "outputSHA256" : "03c5fc192e3d6e95c97b24947e8ad8dfd12aeb2efb3469998af90739b8f40638"
+  },
+  {
     "dialect" : "html401",
     "fixture" : "wikipedia-article",
     "outputBytes" : 641729,
     "outputSHA256" : "65589856177a12990db590dbc520ed91b2a479cceda6d0816ace9d4e9fed01d5"
+  },
+  {
+    "dialect" : "html401.layout",
+    "fixture" : "wikipedia-article",
+    "outputBytes" : 642438,
+    "outputSHA256" : "e1b91ebe028f47f855b98c59f0fdfcbac892188b0e5dba06a36c6764e540278a"
   }
 ]

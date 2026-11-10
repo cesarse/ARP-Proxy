@@ -9,10 +9,12 @@ import SwiftSoup
 /// takes — HTML simplification *and* the https→http rewrite that follows it.
 nonisolated struct Measurer: Sendable {
 
-    func measure(_ fixture: Fixture, version: HTMLVersion) throws -> (Measurement, Data) {
+    func measure(_ fixture: Fixture, version: HTMLVersion,
+                 layout: Bool) throws -> (Measurement, Data) {
         var settings = ProxySettings()
         settings.simplifyHTML = true
         settings.htmlVersion = version
+        settings.reproduceLayout = layout
         let transformer = BodyTransformer(settings: settings)
 
         let clock = ContinuousClock()
@@ -32,6 +34,7 @@ nonisolated struct Measurer: Sendable {
         let measurement = Measurement(
             fixture: fixture.name,
             version: version,
+            layout: layout,
             inputBytes: fixture.body.count,
             outputBytes: output.count,
             milliseconds: Double(elapsed.components.attoseconds) / 1e15

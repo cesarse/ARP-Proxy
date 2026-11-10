@@ -13,7 +13,12 @@ swift run arp-bench
 swift run arp-bench --only cnn-homepage --dialect 32
 ```
 
-Flags: `--only <fixture>`, `--dialect 32|401`, `--update`.
+Flags: `--only <fixture>`, `--dialect 32|401`, `--tables on|off`, `--update`.
+
+Every fixture runs in four combinations — both dialects × both layout modes —
+so a full run is 24 measurements. The table-building pass is the only one that
+*adds* structure and the only one that can misread a page, so it earns
+permanent coverage rather than an occasional manual check.
 
 The harness exits non-zero when an invariant breaks or output drifts, so it
 works as a CI gate.
@@ -138,6 +143,57 @@ under test share a parser, the benchmark stops being independent; that is also
 why `DTDVocabulary` here keeps its own transcription of the element sets rather
 than importing `HTMLVocabulary` from the app. Two independent transcriptions
 catch each other's typos.
+
+## What the corpus decided about table layout
+
+`GridDetector`'s thresholds are not guesses; each one is a measurement from
+these six pages.
+
+- **Every member carries an image.** On CNN the content cards score 1.0 on
+  this and run ~26 nodes each, while the navigation menus — which repeat just
+  as often, 20 and 15 at a time — score 0.0 and run 1–2 nodes.
+- **Cells run 5–80 nodes.** CNN's eight `div.zone` blocks repeat *and* contain
+  images, but at ~150 nodes each they are full-width page sections; standing
+  them side by side would be nonsense.
+- **Nothing under `<nav>`, `<header>` or `<footer>`.** This is why the pass
+  runs before `RenameSemanticTagsPass` — afterwards they are all `<div>` and
+  the signal is gone.
+- **A page needs at least two grids.** DuckDuckGo's ten search results pass
+  every other test: same class, right size, an image each. But they are a
+  list, and they read far better as one. A page that genuinely lays itself out
+  as a grid does so repeatedly — CNN 11, BBC 5, Wikipedia 2, DuckDuckGo 1.
+
+Measured effect, HTML 3.2:
+
+| fixture | plain | with tables | tables built |
+|---|---|---|---|
+| cnn-homepage | 141,488 | 142,608 | 9 |
+| bbc-news | 40,410 | 41,873 | 4 |
+| wikipedia-article | 485,861 | 486,570 | 3 |
+| hacker-news | 20,418 | 20,418 | 0 |
+| duckduckgo-html | 23,220 | 23,220 | 0 |
+| github-repo | 45,685 | 45,685 | 0 |
+
+The three zeroes are the point: already-clean pages come through
+byte-identical. Link and image counts are unchanged on every fixture, so the
+pass moves content without dropping any.
+
+### Why the cells constrain their images
+
+The first working version produced tables **1,464 px wide on a 640 px screen** —
+three columns of 488 px — which would have put two thirds of the page behind a
+horizontal scrollbar. A table cell is only as narrow as its widest image, and
+`ResolveLazyImagesPass` has already stripped width/height by then, so the
+browser was laying out BBC's 480 px photos at full size.
+
+`TableLayoutBuilder` now sets `width` on every unsized image in a cell — width
+alone, so the browser keeps the aspect ratio, and a plain pixel count because
+HTML 3.2 has no percentage lengths for `<img>`. Forced onto a 640 px canvas the
+same table now renders at exactly 640 px, three columns of 213 px, no overflow.
+
+This is the failure mode worth remembering: the markup was valid, the invariants
+all passed, and the layout was still unusable. Validity is not legibility, and
+the harness cannot see the difference — look at the output in a real browser.
 
 ## Going deeper
 

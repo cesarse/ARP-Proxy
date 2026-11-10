@@ -88,7 +88,13 @@ ARP Proxy → Settings… (⌘,) opens a settings window where you can choose:
   `<span>`) or **HTML 4.01 Transitional**; the matching DOCTYPE is emitted,
 - whether to **remove image size attributes** (on by default — fixes
   stretched images on CSS-sized sites, at the cost of some reflow while a
-  page loads).
+  page loads),
+- whether to **reproduce page layout with tables** (off by default). Modern
+  pages keep their layout in CSS, which the simplifier strips, so a page
+  arrives as one long column. This rebuilds the card grids as tables, the way
+  a site would have been built in 1997. The original structure has to be
+  inferred from repetition in the markup, so it is the one setting that can
+  read a page wrongly — hence opt-in.
 
 Settings are persisted and apply to the next request — no restart needed
 (except the port). The UI uses Liquid Glass, so the app requires macOS 26.
@@ -132,8 +138,9 @@ app itself is still built from the Xcode project. See
 
 - Rasterize SVG images referenced by `<img src="….svg">` to GIF/JPEG —
   inline `<svg>` is removed, but image files still reach the browser as SVG.
-- Convert pages further toward HTML 3.2 (tables instead of CSS layout,
-  `<font>` tags).
+- Convert pages further toward HTML 3.2: `<font>` tags and `bgcolor`, plus a
+  small hand-written CSS 1 stylesheet for the 4.01 dialect. (Table layout is
+  done — see the *Reproduce page layout with tables* setting.)
 - Optionally transcode PNG too, for browsers that predate PNG support
   (Netscape 2/3, IE 3).
 

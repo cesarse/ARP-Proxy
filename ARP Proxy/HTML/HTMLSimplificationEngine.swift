@@ -51,6 +51,7 @@ nonisolated struct HTMLSimplificationEngine: Sendable {
             UnwrapNoscriptPass(),
             FlattenPicturePass(),
             RemoveModernTagsPass(),
+        ] + layoutPasses + [
             RenameSemanticTagsPass(),
         ] + dialect.versionPasses + [
             UnwrapUnknownElementsPass(vocabulary: dialect.vocabulary),
@@ -58,6 +59,15 @@ nonisolated struct HTMLSimplificationEngine: Sendable {
             RemoveCommentsPass(),
             ReplaceDoctypePass(doctype: dialect.doctype),
         ])
+    }
+
+    /// Grid detection needs <nav>, <header> and <footer> intact to tell menus
+    /// from content — they repeat just as regularly as cards do — so it runs
+    /// before `RenameSemanticTagsPass` flattens them all to <div>. It also
+    /// runs after `RemoveModernTagsPass`, so inline SVG and scripts are not
+    /// mistaken for page structure when sizing a candidate cell.
+    private var layoutPasses: [any HTMLPass] {
+        settings.reproduceLayout ? [ReproduceLayoutPass()] : []
     }
 
     private func serialize(_ doc: Document) throws -> Data {

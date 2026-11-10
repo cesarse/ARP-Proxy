@@ -20,7 +20,7 @@ nonisolated struct GoldenRecord: Codable, Sendable, Equatable {
 
     init(_ measurement: Measurement) {
         self.init(fixture: measurement.fixture,
-                  dialect: measurement.version.rawValue,
+                  dialect: measurement.modeSlug,
                   outputBytes: measurement.outputBytes,
                   outputSHA256: measurement.outputSHA256)
     }

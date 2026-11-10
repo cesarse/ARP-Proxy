@@ -7,6 +7,9 @@ import Foundation
 nonisolated struct Measurement: Sendable {
     let fixture: String
     let version: HTMLVersion
+    /// Whether `reproduceLayout` was on — the risky, additive mode, so it is
+    /// measured as its own row rather than folded into the dialect.
+    let layout: Bool
 
     let inputBytes: Int
     let outputBytes: Int
@@ -35,6 +38,16 @@ nonisolated struct Measurement: Sendable {
     /// Column-width friendly form of `dialectLabel` for the report table.
     var shortDialectLabel: String {
         version == .html32 ? "HTML 3.2" : "HTML 4.01"
+    }
+
+    /// Full description for drift and failure lines.
+    var modeLabel: String {
+        layout ? "\(dialectLabel) + tables" : dialectLabel
+    }
+
+    /// Identifies the run in goldens and output filenames.
+    var modeSlug: String {
+        layout ? "\(version.rawValue).layout" : version.rawValue
     }
 
     /// The promises. A non-empty list fails the whole run — these are not
