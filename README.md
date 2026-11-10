@@ -45,6 +45,22 @@ talks plain HTTP to the proxy, and the proxy talks modern HTTPS to the world.
 - `CONNECT` (real HTTPS tunneling) is intentionally rejected with a friendly
   error page telling you to use `http://` — old SSL stacks couldn't complete a
   modern TLS handshake anyway.
+- **Wayback mode** (opt-in) answers every request from the
+  [Internet Archive](https://web.archive.org/) instead of the live web, as
+  captured nearest a chosen date. The guest browser never knows: it asks for
+  `http://www.cnn.com/` and gets CNN as of that day, with the original
+  addresses in every link, so each click comes back through the proxy.
+  Captures are fetched in the archive's raw `id_` form (no toolbar, no link
+  rewriting). The archive's "nearest capture" redirects are followed inside
+  the proxy; redirects the site itself made back then are passed to the
+  browser as the site's own addresses, so relative links keep resolving.
+  Archive-only response headers are stripped, and the guest's cookies,
+  credentials and cache validators are not sent to the archive. Pages that
+  were never archived get a plain error page naming the URL and the date;
+  form submissions (`POST`) can't be replayed and are refused. Requests to
+  `archive.org` itself still go to the live site. The request log shows the
+  actual capture date of each response, which can drift from the chosen
+  date when the archive has no closer copy.
 
 ## Project layout
 
@@ -96,7 +112,10 @@ ARP Proxy → Settings… (⌘,) opens a settings window where you can choose:
   arrives as one long column. This rebuilds the card grids as tables, the way
   a site would have been built in 1997. The original structure has to be
   inferred from repetition in the markup, so it is the one setting that can
-  read a page wrongly — hence opt-in.
+  read a page wrongly — hence opt-in,
+- whether to **browse the past with the Wayback Machine**, and the **date**
+  to browse (1996 to today). While it is on, the main window shows the date
+  next to the proxy status.
 
 Settings are persisted and apply to the next request — no restart needed
 (except the port). The UI uses Liquid Glass, so the app requires macOS 26.
@@ -146,7 +165,8 @@ Unit tests (Swift Testing) in `Tests/ARPProxyTests/` cover the code that
 shapes traffic without touching the network: resolving the request target,
 the HTTPS upgrade candidates, which request and response headers are
 forwarded, dropped or rewritten, the `https://`→`http://` body rewrite, the
-error page, and settings persistence and clamping. Like the benchmark, they
+error page, settings persistence and clamping, and Wayback mode's address
+mapping and its reading of the archive's redirects and errors. Like the benchmark, they
 compile the app's own sources through the root `Package.swift`; sockets,
 URLSession and the UI are left out.
 
@@ -168,3 +188,8 @@ URLSession and the UI are left out.
   URLSession limitation); most old browsers cope, some cookies may be lost.
 - Sites that hard-require JavaScript will load but not function — that's the
   rendering-simplification battle, not the transport one.
+- In Wayback mode, each page and image comes from its own nearest capture,
+  so parts of a page can be days or years apart. The guest browser's cache
+  doesn't know about the date: after changing it, clear the cache to stop
+  seeing pages from the previous one. The Internet Archive also rate-limits
+  heavy clients; an image-heavy page can occasionally trip it.

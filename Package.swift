@@ -38,6 +38,7 @@ let package = Package(
                 "Proxy/ProxyServerState.swift",
                 "Proxy/UpstreamFetcher.swift",
                 "Proxy/UpstreamResponse.swift",
+                "Proxy/WaybackFetcher.swift",
             ],
             sources: [
                 "HTML", "Images",
@@ -55,6 +56,11 @@ let package = Package(
                 "Proxy/ResponseHeadBuilder.swift",
                 "Proxy/UpstreamRequestBuilder.swift",
                 "Proxy/UpstreamURLResolver.swift",
+                // Wayback Machine address mapping and response interpretation.
+                "Proxy/WaybackAnswer.swift",
+                "Proxy/WaybackError.swift",
+                "Proxy/WaybackResourceKey.swift",
+                "Proxy/WaybackSnapshot.swift",
             ],
             // The app's types are `internal`, which is right for the app — it
             // has no library consumers. Rather than sprinkle `public` through

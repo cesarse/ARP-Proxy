@@ -26,8 +26,11 @@ nonisolated enum UpstreamFetcher {
         throw lastError
     }
 
-    private static func fetch(_ request: HTTPRequest, at url: URL) async throws -> UpstreamResponse {
-        let upstream = UpstreamRequestBuilder.request(for: url, from: request)
+    /// One request to one URL, redirects not followed.
+    static func fetch(_ request: HTTPRequest, at url: URL,
+                      forArchive: Bool = false) async throws -> UpstreamResponse {
+        let upstream = UpstreamRequestBuilder.request(for: url, from: request,
+                                                      forArchive: forArchive)
         let (body, response) = try await session.data(for: upstream, delegate: PassThroughRedirects())
         guard let http = response as? HTTPURLResponse else { throw ProxyError.badRequest }
         return UpstreamResponse(response: http, body: body, url: url)

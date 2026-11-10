@@ -21,6 +21,19 @@ nonisolated struct ProxySettings: Sendable, Equatable {
     /// original structure has to be inferred from the markup, and a wrong
     /// guess reads worse than no layout at all. Hence opt-in.
     var reproduceLayout: Bool = false
+    /// Browse the past: every request is answered from the Internet
+    /// Archive's capture nearest to `waybackDate` instead of the live web.
+    /// The guest browser keeps seeing the original addresses.
+    var waybackEnabled: Bool = false
+    /// Only the calendar day matters; requests ask for noon of that day so
+    /// the archive looks equally far either side of it.
+    var waybackDate: Date = ProxySettings.defaultWaybackDate
+
+    static let defaultWaybackDate: Date = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .current
+        return calendar.date(from: DateComponents(year: 2001, month: 12, day: 8, hour: 12))!
+    }()
 
     private enum Keys {
         static let port = "port"
@@ -31,6 +44,8 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         static let htmlVersion = "htmlVersion"
         static let stripImageDimensions = "stripImageDimensions"
         static let reproduceLayout = "reproduceLayout"
+        static let waybackEnabled = "waybackEnabled"
+        static let waybackDate = "waybackDate"
     }
 
     static func load(from defaults: UserDefaults = .standard) -> ProxySettings {
@@ -60,6 +75,12 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         if defaults.object(forKey: Keys.reproduceLayout) != nil {
             settings.reproduceLayout = defaults.bool(forKey: Keys.reproduceLayout)
         }
+        if defaults.object(forKey: Keys.waybackEnabled) != nil {
+            settings.waybackEnabled = defaults.bool(forKey: Keys.waybackEnabled)
+        }
+        if let date = defaults.object(forKey: Keys.waybackDate) as? Date {
+            settings.waybackDate = date
+        }
         return settings.clamped()
     }
 
@@ -72,6 +93,8 @@ nonisolated struct ProxySettings: Sendable, Equatable {
         defaults.set(htmlVersion.rawValue, forKey: Keys.htmlVersion)
         defaults.set(stripImageDimensions, forKey: Keys.stripImageDimensions)
         defaults.set(reproduceLayout, forKey: Keys.reproduceLayout)
+        defaults.set(waybackEnabled, forKey: Keys.waybackEnabled)
+        defaults.set(waybackDate, forKey: Keys.waybackDate)
     }
 
     func clamped() -> ProxySettings {

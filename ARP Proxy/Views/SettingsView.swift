@@ -8,6 +8,7 @@ struct SettingsView: View {
             ConnectionSettingsSection(server: server)
             ImageSettingsSection(server: server)
             HTMLSettingsSection(server: server)
+            WaybackSettingsSection(server: server)
         }
         .formStyle(.grouped)
         .frame(width: 440)

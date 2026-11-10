@@ -39,12 +39,40 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
             await rejectUnparseableTarget(request)
             return
         }
+        if settings.waybackEnabled, !WaybackSnapshot.isArchive(url) {
+            await handleFromArchive(request, url: url, settings: settings)
+            return
+        }
         do {
             let candidates = HTTPSUpgrader.candidates(for: url)
             let upstream = try await UpstreamFetcher.fetch(request, trying: candidates)
             await deliver(upstream, request: request, settings: settings)
         } catch {
             await reportGatewayFailure(request, url: url, error: error)
+        }
+    }
+
+    /// Wayback mode: the same URL, as the Internet Archive captured it near
+    /// the chosen date. The browser is never told; it sees the original
+    /// addresses, and every link it follows comes back here.
+    private func handleFromArchive(_ request: HTTPRequest, url: URL,
+                                   settings: ProxySettings) async {
+        guard ["GET", "HEAD"].contains(request.method.uppercased()) else {
+            await rejectArchiveSubmission(request)
+            return
+        }
+        let timestamp = WaybackSnapshot.timestamp(for: settings.waybackDate)
+        do {
+            let upstream = try await WaybackFetcher.fetch(request, original: url,
+                                                          timestamp: timestamp)
+            await deliver(upstream, request: request, settings: settings)
+        } catch let error as WaybackError {
+            let page = error.errorPage(for: url, near: settings.waybackDate)
+            await respond(with: page)
+            log(LogEntry(method: request.method, url: request.target,
+                         status: page.status, note: error.logNote))
+        } catch {
+            await reportGatewayFailure(request, url: WaybackSnapshot.archiveRoot, error: error)
         }
     }
 
@@ -66,7 +94,8 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
     }
 
     private func deliveryNote(for upstream: UpstreamResponse, transformNote: String?) -> String {
-        var note = upstream.usedHTTPS ? "https → http" : "http"
+        var note = upstream.archivedAt.map { "wayback " + WaybackSnapshot.day(ofTimestamp: $0) }
+            ?? (upstream.usedHTTPS ? "https → http" : "http")
         if let transformNote {
             note += ", " + transformNote
         }
@@ -80,6 +109,15 @@ nonisolated final class ProxyConnection: @unchecked Sendable {
                 + "ARP Proxy upgrades the connection to HTTPS for you."))
         log(LogEntry(method: request.method, url: request.target,
                      status: 501, note: "CONNECT rejected"))
+    }
+
+    private func rejectArchiveSubmission(_ request: HTTPRequest) async {
+        await respond(with: ErrorPage(
+            status: 501, title: "Forms Cannot Be Sent to the Past",
+            message: "The Wayback Machine replays pages it archived; it cannot submit forms. "
+                + "Turn off Wayback mode in ARP Proxy to use this form."))
+        log(LogEntry(method: request.method, url: request.target,
+                     status: 501, note: "wayback: \(request.method) not replayable"))
     }
 
     private func rejectUnparseableTarget(_ request: HTTPRequest) async {

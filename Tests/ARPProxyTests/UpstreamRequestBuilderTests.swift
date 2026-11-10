@@ -41,6 +41,29 @@ struct UpstreamRequestBuilderTests {
         #expect(upstream.value(forHTTPHeaderField: name) == value)
     }
 
+    @Test("Headers meant for the original site are not sent to the archive",
+          arguments: [
+              "Cookie", "Authorization", "Referer", "If-Modified-Since", "If-None-Match",
+              "If-Match", "If-Unmodified-Since", "If-Range",
+          ])
+    func dropsHeaderForArchive(_ name: String) {
+        let request = HTTPRequest.fixture(headers: [(name, "x")])
+        let upstream = UpstreamRequestBuilder.request(for: url, from: request, forArchive: true)
+        #expect(upstream.value(forHTTPHeaderField: name) == nil)
+    }
+
+    @Test("The archive still gets the browser's identity and preferences")
+    func forwardsHeadersToArchive() {
+        let request = HTTPRequest.fixture(headers: [
+            ("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)"),
+            ("Accept-Language", "pt-br"),
+        ])
+        let upstream = UpstreamRequestBuilder.request(for: url, from: request, forArchive: true)
+        #expect(upstream.value(forHTTPHeaderField: "User-Agent")
+                == "Mozilla/4.0 (compatible; MSIE 5.5; Windows 98)")
+        #expect(upstream.value(forHTTPHeaderField: "Accept-Language") == "pt-br")
+    }
+
     @Test("A request body is attached")
     func attachesBody() {
         let body = Data("q=retro".utf8)

@@ -1,6 +1,40 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Browse the past with the Wayback Machine" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit der Wayback Machine in der Vergangenheit surfen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegar por el pasado con la Wayback Machine"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naviguer dans le passé avec la Wayback Machine"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naviga nel passato con la Wayback Machine"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegar pelo passado com a Wayback Machine"
+          }
+        }
+      }
+    },
     "Changing the port restarts the proxy." : {
       "localizations" : {
         "de" : {
@@ -137,6 +171,40 @@
         }
       }
     },
+    "Date" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datum"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
+    },
     "Error: %@" : {
       "localizations" : {
         "de" : {
@@ -167,6 +235,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erro: %@"
+          }
+        }
+      }
+    },
+    "Every page is served from the Internet Archive. Change the date in Settings." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Seite wird aus dem Internet Archive geladen. Das Datum lässt sich in den Einstellungen ändern."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las páginas se sirven desde el Internet Archive. Cambia la fecha en Ajustes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chaque page est servie depuis l’Internet Archive. Modifiez la date dans les Réglages."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogni pagina viene servita dall’Internet Archive. Cambia la data nelle Impostazioni."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas as páginas vêm do Internet Archive. Altere a data nos Ajustes."
+          }
+        }
+      }
+    },
+    "Fixes stretched images on sites that size them with CSS, at the cost of some reflow while a page loads." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behebt verzerrte Bilder auf Seiten, die Bildgrößen per CSS festlegen — dafür kann sich das Layout während des Ladens verschieben."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrige las imágenes deformadas en sitios que definen su tamaño con CSS, a costa de cierto reajuste del diseño durante la carga."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrige les images déformées sur les sites qui définissent leur taille en CSS, au prix d’un léger réagencement pendant le chargement."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corregge le immagini deformate sui siti che ne definiscono le dimensioni con i CSS, al costo di un certo riposizionamento durante il caricamento."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrige imagens distorcidas em sites que definem o tamanho por CSS, ao custo de algum rearranjo do layout durante o carregamento."
           }
         }
       }
@@ -409,6 +545,74 @@
         }
       }
     },
+    "Pages come from the Internet Archive's copy closest to the date below; the guest browser still sees the original addresses." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiten stammen aus der Kopie des Internet Archive, die dem unten gewählten Datum am nächsten liegt; der Gast-Browser sieht weiterhin die ursprünglichen Adressen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las páginas vienen de la copia del Internet Archive más cercana a la fecha de abajo; el navegador del invitado sigue viendo las direcciones originales."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pages proviennent de la copie de l’Internet Archive la plus proche de la date ci-dessous ; le navigateur de l’invité voit toujours les adresses d’origine."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le pagine provengono dalla copia dell’Internet Archive più vicina alla data qui sotto; il browser del guest vede ancora gli indirizzi originali."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As páginas vêm da cópia do Internet Archive mais próxima da data abaixo; o navegador do convidado continua vendo os endereços originais."
+          }
+        }
+      }
+    },
+    "Pages the guest browser has cached may still show the previous date." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seiten im Cache des Gast-Browsers können noch das vorherige Datum zeigen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las páginas en la caché del navegador del invitado pueden seguir mostrando la fecha anterior."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les pages en cache dans le navigateur de l’invité peuvent encore afficher la date précédente."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le pagine nella cache del browser del guest possono mostrare ancora la data precedente."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Páginas em cache no navegador do convidado ainda podem mostrar a data anterior."
+          }
+        }
+      }
+    },
     "Port:" : {
       "localizations" : {
         "de" : {
@@ -609,40 +813,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Em execução na porta %@"
-          }
-        }
-      }
-    },
-    "Fixes stretched images on sites that size them with CSS, at the cost of some reflow while a page loads." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Behebt verzerrte Bilder auf Seiten, die Bildgrößen per CSS festlegen — dafür kann sich das Layout während des Ladens verschieben."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrige las imágenes deformadas en sitios que definen su tamaño con CSS, a costa de cierto reajuste del diseño durante la carga."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrige les images déformées sur les sites qui définissent leur taille en CSS, au prix d’un léger réagencement pendant le chargement."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corregge le immagini deformate sui siti che ne definiscono le dimensioni con i CSS, al costo di un certo riposizionamento durante il caricamento."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Corrige imagens distorcidas em sites que definem o tamanho por CSS, ao custo de algum rearranjo do layout durante o carregamento."
           }
         }
       }
@@ -881,6 +1051,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "VPN"
+          }
+        }
+      }
+    },
+    "Wayback: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wayback: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wayback: %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wayback : %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wayback: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wayback: %@"
           }
         }
       }

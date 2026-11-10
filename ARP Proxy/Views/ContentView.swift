@@ -30,6 +30,10 @@ struct ContentView: View {
     private var header: some View {
         HStack {
             StatusView(state: server.state, port: server.settings.port)
+            if server.settings.waybackEnabled {
+                WaybackBadge(date: server.settings.waybackDate)
+                    .padding(.leading, 8)
+            }
             Spacer()
             Button {
                 server.toggle()

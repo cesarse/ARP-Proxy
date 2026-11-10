@@ -24,6 +24,8 @@ struct ProxySettingsTests {
         #expect(settings.htmlVersion == .html32)
         #expect(settings.stripImageDimensions)
         #expect(!settings.reproduceLayout)
+        #expect(!settings.waybackEnabled)
+        #expect(WaybackSnapshot.timestamp(for: settings.waybackDate) == "20011208120000")
     }
 
     @Test("Loading from an empty store yields the defaults")
@@ -45,6 +47,8 @@ struct ProxySettingsTests {
             settings.htmlVersion = .html401
             settings.stripImageDimensions = false
             settings.reproduceLayout = true
+            settings.waybackEnabled = true
+            settings.waybackDate = Date(timeIntervalSince1970: 915_148_800)  // 1999-01-01
             settings.save(to: defaults)
             #expect(ProxySettings.load(from: defaults) == settings)
         }
