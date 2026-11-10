@@ -69,6 +69,8 @@ One type per file, grouped by responsibility:
 - `Resources/` — asset catalog and the localization string catalog.
 - `Benchmarks/` — frozen captures of real pages and the harness that scores
   the simplification pipeline against them ([details](Benchmarks/README.md)).
+- `Tests/` — unit tests for the proxy's request/response helpers and
+  settings ([how to run](#tests)).
 
 ## Building
 
@@ -129,10 +131,24 @@ element and image counts) and hard invariants (pure ASCII, no surviving
 `https://`, nothing outside the target DTD, deterministic output). It exits
 non-zero on a broken invariant or drifted output, so it doubles as a CI gate.
 
-The `Package.swift` at the repo root exists only for this: it compiles the
-pipeline from the app's own sources, so there is no second copy to drift. The
-app itself is still built from the Xcode project. See
+The `Package.swift` at the repo root exists for this and for the unit tests:
+it compiles the pipeline from the app's own sources, so there is no second
+copy to drift. The app itself is still built from the Xcode project. See
 [`Benchmarks/README.md`](Benchmarks/README.md).
+
+## Tests
+
+```bash
+swift test
+```
+
+Unit tests (Swift Testing) in `Tests/ARPProxyTests/` cover the code that
+shapes traffic without touching the network: resolving the request target,
+the HTTPS upgrade candidates, which request and response headers are
+forwarded, dropped or rewritten, the `https://`→`http://` body rewrite, the
+error page, and settings persistence and clamping. Like the benchmark, they
+compile the app's own sources through the root `Package.swift`; sockets,
+URLSession and the UI are left out.
 
 ## Ideas for the next step
 

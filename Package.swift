@@ -2,14 +2,17 @@
 import PackageDescription
 
 // The app itself is built from "ARP Proxy.xcodeproj"; this package exists so
-// the body-transformation pipeline can be compiled and benchmarked outside the
-// app bundle. It reuses the very same sources — there are no copies to drift.
+// the body-transformation pipeline and the request/response helpers can be
+// compiled, benchmarked and unit-tested outside the app bundle. It reuses the
+// very same sources — there are no copies to drift.
 //
-// Only the pure-Foundation transformation layer is pulled in. The networking
-// layer (sockets, URLSession, the SwiftUI app) is excluded: it needs a running
-// proxy, and the benchmark feeds bodies in directly. Adding a file to `Proxy/`
-// raises an "unhandled files" warning until it is classified below — that is
-// deliberate, so new sources get a decision rather than silently vanishing.
+// Only the pure-Foundation layer is pulled in: the body transformations, plus
+// the helpers that shape requests and responses without touching the network.
+// The networking layer (sockets, URLSession, the SwiftUI app) is excluded: it
+// needs a running proxy, while the benchmark and the tests feed values in
+// directly. Adding a file to `Proxy/` raises an "unhandled files" warning until
+// it is classified below — that is deliberate, so new sources get a decision
+// rather than silently vanishing.
 let package = Package(
     name: "ARPProxyBenchmarks",
     platforms: [.macOS(.v13)],
@@ -24,12 +27,7 @@ let package = Package(
             exclude: [
                 "App", "Views", "Resources", "ARPProxy.entitlements",
                 "Proxy/BrowserSocket.swift",
-                "Proxy/ErrorPage.swift",
-                "Proxy/HTTPHeader.swift",
-                "Proxy/HTTPReasonPhrase.swift",
-                "Proxy/HTTPRequest.swift",
                 "Proxy/HTTPRequestReader.swift",
-                "Proxy/HTTPSUpgrader.swift",
                 "Proxy/LogEntry.swift",
                 "Proxy/NetworkInfo.swift",
                 "Proxy/NetworkInterfaceAddress.swift",
@@ -38,11 +36,8 @@ let package = Package(
                 "Proxy/ProxyError.swift",
                 "Proxy/ProxyServer.swift",
                 "Proxy/ProxyServerState.swift",
-                "Proxy/ResponseHeadBuilder.swift",
                 "Proxy/UpstreamFetcher.swift",
-                "Proxy/UpstreamRequestBuilder.swift",
                 "Proxy/UpstreamResponse.swift",
-                "Proxy/UpstreamURLResolver.swift",
             ],
             sources: [
                 "HTML", "Images",
@@ -50,6 +45,16 @@ let package = Package(
                 "Proxy/SchemeRewriter.swift",
                 "Proxy/TransformedBody.swift",
                 "Proxy/BodyTransformer.swift",
+                // Request/response shaping — pure functions over Foundation
+                // values, covered by the unit tests.
+                "Proxy/ErrorPage.swift",
+                "Proxy/HTTPHeader.swift",
+                "Proxy/HTTPReasonPhrase.swift",
+                "Proxy/HTTPRequest.swift",
+                "Proxy/HTTPSUpgrader.swift",
+                "Proxy/ResponseHeadBuilder.swift",
+                "Proxy/UpstreamRequestBuilder.swift",
+                "Proxy/UpstreamURLResolver.swift",
             ],
             // The app's types are `internal`, which is right for the app — it
             // has no library consumers. Rather than sprinkle `public` through
@@ -61,6 +66,11 @@ let package = Package(
             name: "arp-bench",
             dependencies: ["ARPProxyHTML", "SwiftSoup"],
             path: "Benchmarks/Sources/arp-bench"
+        ),
+        .testTarget(
+            name: "ARPProxyTests",
+            dependencies: ["ARPProxyHTML"],
+            path: "Tests/ARPProxyTests"
         ),
     ]
 )

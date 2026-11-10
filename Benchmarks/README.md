@@ -26,10 +26,11 @@ works as a CI gate.
 ## How it is wired
 
 `Package.swift` at the repo root compiles the pipeline **straight from the
-app's own sources** — `HTML/`, `Images/`, and the four `Proxy/` files that have
+app's own sources** — `HTML/`, `Images/`, and the `Proxy/` files that have
 no networking dependencies. There is no copy of the pipeline here to fall out
 of date. The app is still built from `ARP Proxy.xcodeproj`; the package exists
-only so the transformation layer can run outside an app bundle.
+only so the transformation layer can run outside an app bundle (it also hosts
+the unit tests in `Tests/ARPProxyTests`).
 
 The app's types are `internal`, which is correct for an app with no library
 consumers. Rather than spread `public` through production code purely to let a
