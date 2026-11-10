@@ -115,7 +115,9 @@ ARP Proxy → Settings… (⌘,) opens a settings window where you can choose:
   read a page wrongly — hence opt-in,
 - whether to **browse the past with the Wayback Machine**, and the **date**
   to browse (1996 to today). While it is on, the main window shows the date
-  next to the proxy status.
+  next to the proxy status. Pages from the right era are already what the
+  other options aim for, so while image conversion or HTML simplification
+  is still on, a red warning suggests turning them off.
 
 Settings are persisted and apply to the next request — no restart needed
 (except the port). The UI uses Liquid Glass, so the app requires macOS 26.

@@ -205,6 +205,40 @@
         }
       }
     },
+    "Depending on the date, archived pages may already suit vintage browsers and read better with the Images and HTML options above turned off." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je nach Datum sind archivierte Seiten schon für alte Browser geeignet und lesen sich besser, wenn die Optionen unter „Bilder“ und „HTML“ oben ausgeschaltet sind."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Según la fecha, las páginas archivadas pueden estar ya pensadas para navegadores antiguos y leerse mejor con las opciones de Imágenes y HTML de arriba desactivadas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selon la date, les pages archivées conviennent peut-être déjà aux anciens navigateurs et se lisent mieux avec les options Images et HTML ci-dessus désactivées."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A seconda della data, le pagine archiviate potrebbero già essere adatte ai browser d’epoca e leggersi meglio con le opzioni Immagini e HTML qui sopra disattivate."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dependendo da data, as páginas arquivadas podem já ser adequadas a navegadores antigos e ficar mais legíveis com as opções de Imagens e HTML acima desativadas."
+          }
+        }
+      }
+    },
     "Error: %@" : {
       "localizations" : {
         "de" : {
